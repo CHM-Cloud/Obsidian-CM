@@ -194,7 +194,6 @@
 </head>
 <body>
 
-<!-- ░░ LOGIN ░░ -->
 <div id="login-screen">
   <div class="login-card">
     <div class="vault-icon">🔒</div>
@@ -206,7 +205,6 @@
   </div>
 </div>
 
-<!-- ░░ APP ░░ -->
 <div id="app">
   <div class="topbar">
     <span>🔮</span>
@@ -220,28 +218,25 @@
   </div>
 
   <div class="workspace">
-    <!-- SIDEBAR -->
     <div class="sidebar">
       <div class="sidebar-header">
         <span>📁 Fichiers</span>
       </div>
       <div class="file-tree" id="file-tree"></div>
 
-      <!-- Upload zone -->
       <div class="upload-zone" onclick="document.getElementById('file-input').click()">
-        <p>⬆️ <strong>Importer des notes</strong><br>Cliquez ou glissez des fichiers .md</p>
+        <p>⬆️ <strong>Importer des fichiers</strong><br>Notes (.md, .txt) ou documents/images</p>
       </div>
-      <input type="file" id="file-input" multiple accept=".md,.txt" onchange="handleFileUpload(event)">
+      <input type="file" id="file-input" multiple onchange="handleFileUpload(event)">
     </div>
 
-    <!-- CONTENT -->
     <div class="content-area">
       <div class="content-tabs" id="tabs"></div>
       <div class="note-view" id="note-view">
         <div class="empty-state">
           <span class="big-icon">🔮</span>
-          <p>Sélectionnez une note dans le panneau gauche</p>
-          <p style="font-size:0.8rem">ou importez vos fichiers .md</p>
+          <p>Sélectionnez un fichier ou une note dans le panneau gauche</p>
+          <p style="font-size:0.8rem">ou importez vos documents</p>
         </div>
       </div>
     </div>
@@ -250,12 +245,11 @@
 
 <script>
 /* ─── CONFIG ─────────────────────────────────────────────── */
-// ⚠️ CHANGEZ CE MOT DE PASSE avant de déployer !
 const VAULT_PASSWORD = "3R$8T@cfG#PPhwiI9f";
 const VAULT_NAME     = "Coffre CM";
 
 /* ─── STATE ─────────────────────────────────────────────── */
-let vault      = {};    // { "path/to/file.md": "content…" }
+let vault      = {};    // { "path/to/file.ext": { type: "text|binary", content: "..." } }
 let openTabs   = [];    // [{ path, title }]
 let activeTab  = null;
 
@@ -277,29 +271,49 @@ document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key
 /* ─── DEMO NOTES ─────────────────────────────────────────── */
 function loadDemo() {
   const demo = {
-    "README.md": `# Bienvenue dans votre coffre 👋\n\nCeci est un aperçu de votre coffre Obsidian sur le web.\n\n## Fonctionnalités\n\n- 📁 Navigation par dossiers\n- 🔍 Recherche plein texte\n- 📝 Rendu Markdown complet\n- ⬆️ Import de fichiers .md\n- 🏷️ Support des tags\n\n## Comment importer vos notes ?\n\n1. Cliquez sur la zone **Importer des notes** dans le panneau gauche\n2. Sélectionnez vos fichiers \`.md\` depuis votre coffre Obsidian\n3. Ils apparaîtront automatiquement dans l'arborescence\n\n> 💡 **Astuce** : Vous pouvez glisser-déposer plusieurs fichiers d'un coup.\n\n## Exemple de code\n\n\`\`\`python\ndef bonjour(nom):\n    print(f"Bonjour, {nom} !")\n\nbonjour("Obsidian")\n\`\`\`\n\n#bienvenue #guide`,
-    "Journal/2025-01-15.md": `# Journal — 15 janvier 2025\n\n## Ce que j'ai fait aujourd'hui\n\n- [x] Réunion d'équipe à 9h\n- [x] Revue du projet Alpha\n- [ ] Mettre à jour la documentation\n- [ ] Répondre aux emails\n\n## Notes\n\nRéunion productive. Le projet avance bien.\n\nPoints importants :\n- Deadline fixée au **28 février**\n- Besoin de 2 développeurs supplémentaires\n- Budget approuvé à 80%\n\n#journal #travail`,
-    "Journal/2025-01-16.md": `# Journal — 16 janvier 2025\n\n## Idées du matin\n\nQuelques réflexions sur le projet en cours…\n\n| Priorité | Tâche | Statut |\n|----------|-------|--------|\n| Haute | Architecture | ✅ |\n| Haute | Tests | 🔄 |\n| Moyenne | Docs | ⏳ |\n\n#journal #idées`,
-    "Projets/Projet Alpha.md": `# Projet Alpha 🚀\n\n## Objectif\n\nCréer une plateforme de gestion de contenu moderne.\n\n## Équipe\n\n- Chef de projet : Marie\n- Développeurs : Jean, Paul, Sophie\n- Design : Léa\n\n## Planning\n\n### Phase 1 — Conception (terminée)\n- Architecture technique\n- Wireframes validés\n- Stack choisie : Next.js + Supabase\n\n### Phase 2 — Développement (en cours)\n- Backend API : 60%\n- Frontend : 40%\n- Tests : 20%\n\n### Phase 3 — Déploiement\n- Prévu : mars 2025\n\n## Budget\n\n\`\`\`\nTotal alloué :   50 000 €\nDépensé :        18 500 €\nRestant :        31 500 €\n\`\`\`\n\n#projet #alpha #travail`,
-    "Ressources/Liens utiles.md": `# Liens utiles 🔗\n\n## Obsidian\n- [Site officiel](https://obsidian.md)\n- [Documentation](https://help.obsidian.md)\n- [Forum communauté](https://forum.obsidian.md)\n\n## Outils de productivité\n- [Notion](https://notion.so)\n- [Logseq](https://logseq.com)\n- [Roam Research](https://roamresearch.com)\n\n## Hébergement de notes\n- [GitHub Pages](https://pages.github.com) — gratuit\n- [Netlify](https://netlify.com) — gratuit\n- [Vercel](https://vercel.com) — gratuit\n\n#ressources #liens`,
+    "README.md": {
+      type: "text",
+      content: `# Bienvenue dans votre coffre 👋\n\nCeci est un aperçu de votre coffre Obsidian sur le web.\n\n## Fonctionnalités\n\n- 📁 Navigation par dossiers\n- 🔍 Recherche plein texte\n- 📝 Rendu Markdown complet\n- ⬆️ Import de TOUS vos fichiers (images, notes, documents)\n- 🏷️ Support des tags\n\n## Comment importer vos documents ?\n\n1. Cliquez sur la zone **Importer des fichiers** dans le panneau gauche\n2. Sélectionnez n'importe quel fichier (ex: \`.md\`, \`.txt\`, \`.png\`, \`.jpg\`)\n3. Ils apparaîtront automatiquement dans l'arborescence\n\n#bienvenue #guide`
+    },
+    "Journal/2025-01-15.md": {
+      type: "text",
+      content: `# Journal — 15 janvier 2025\n\n## Ce que j'ai fait aujourd'hui\n\n- [x] Réunion d'équipe à 9h\n- [x] Revue du projet Alpha\n\n#journal #travail`
+    }
   };
   Object.assign(vault, demo);
   renderTree();
 }
 
 /* ─── FILE UPLOAD ────────────────────────────────────────── */
-function handleFileUpload(e) {
-  const files = Array.from(e.target.files);
+function processFiles(files) {
   let count = 0;
+  if (files.length === 0) return;
+
   files.forEach(f => {
     const reader = new FileReader();
+    const isText = f.name.endsWith('.md') || f.name.endsWith('.txt');
+
     reader.onload = ev => {
-      vault[f.name] = ev.target.result;
+      vault[f.name] = {
+        type: isText ? "text" : "binary",
+        content: ev.target.result,
+        mimeType: f.type
+      };
       count++;
       if (count === files.length) renderTree();
     };
-    reader.readAsText(f);
+
+    if (isText) {
+      reader.readAsText(f);
+    } else {
+      reader.readAsDataURL(f); // Pratique pour charger directement des images ou médias
+    }
   });
+}
+
+function handleFileUpload(e) {
+  const files = Array.from(e.target.files);
+  processFiles(files);
   e.target.value = '';
 }
 
@@ -307,17 +321,8 @@ function handleFileUpload(e) {
 document.querySelector('.sidebar').addEventListener('dragover', e => e.preventDefault());
 document.querySelector('.sidebar').addEventListener('drop', e => {
   e.preventDefault();
-  const files = Array.from(e.dataTransfer.files).filter(f => f.name.endsWith('.md') || f.name.endsWith('.txt'));
-  let count = 0;
-  files.forEach(f => {
-    const reader = new FileReader();
-    reader.onload = ev => {
-      vault[f.name] = ev.target.result;
-      count++;
-      if (count === files.length) renderTree();
-    };
-    reader.readAsText(f);
-  });
+  const files = Array.from(e.dataTransfer.files);
+  processFiles(files);
 });
 
 /* ─── TREE ───────────────────────────────────────────────── */
@@ -356,9 +361,12 @@ function renderNode(node, prefix) {
     if (typeof value === 'string' && value.startsWith('__FILE__')) {
       const path = value.replace('__FILE__', '');
       const isActive = activeTab === path;
-      const label = name.replace(/\.md$/i, '');
+      const isText = path.endsWith('.md') || path.endsWith('.txt');
+      const icon = isText ? '📄' : '📎';
+      const label = path.split('/').pop();
+      
       html += `<div class="tree-file${isActive ? ' active' : ''}" onclick="openNote('${path.replace(/'/g,"\\'")}')">
-        <span class="icon">📄</span><span>${label}</span></div>`;
+        <span class="icon">${icon}</span><span>${label}</span></div>`;
     } else {
       const folderId = 'folder-' + btoa(prefix + name).replace(/[^a-z0-9]/gi,'');
       html += `<div class="tree-folder" onclick="toggleFolder('${folderId}')">
@@ -378,7 +386,7 @@ function toggleFolder(id) {
 /* ─── TABS ───────────────────────────────────────────────── */
 function openNote(path) {
   if (!openTabs.find(t => t.path === path)) {
-    const title = path.split('/').pop().replace(/\.md$/i, '');
+    const title = path.split('/').pop();
     openTabs.push({ path, title });
   }
   activeTab = path;
@@ -401,23 +409,47 @@ function closeTab(path, e) {
 
 function renderTabs() {
   const el = document.getElementById('tabs');
-  el.innerHTML = openTabs.map(t => `
+  el.innerHTML = openTabs.map(t => {
+    const isText = t.path.endsWith('.md') || t.path.endsWith('.txt');
+    const icon = isText ? '📄' : '📎';
+    return `
     <div class="tab${t.path === activeTab ? ' active' : ''}" onclick="openNote('${t.path.replace(/'/g,"\\'")}')">
-      📄 ${t.title}
+      ${icon} ${t.title}
       <span class="tab-close" onclick="closeTab('${t.path.replace(/'/g,"\\'")}', event)">✕</span>
-    </div>`).join('');
+    </div>`}).join('');
 }
 
-/* ─── RENDER NOTE ────────────────────────────────────────── */
+/* ─── RENDER NOTE / FILE ─────────────────────────────────── */
 function renderNote(path) {
-  const raw = vault[path] || '';
-  const title = path.split('/').pop().replace(/\.md$/i, '');
+  const fileData = vault[path];
+  if (!fileData) return;
+
+  const title = path.split('/').pop();
+
+  if (fileData.type === "binary") {
+    // Rendu pour un fichier générique (Exemple : Images)
+    let contentHtml = `<p style="color:var(--text2)">Fichier joint non textuel (${fileData.mimeType || 'Inconnu'})</p>`;
+    
+    if (fileData.mimeType && fileData.mimeType.startsWith('image/')) {
+      contentHtml = `<img src="${fileData.content}" alt="${title}" style="max-width:100%; max-height: 500px; border-radius: var(--r);">`;
+    } else {
+      contentHtml += `<br><a href="${fileData.content}" download="${title}" style="color:var(--purple2)">📥 Télécharger le fichier</a>`;
+    }
+
+    document.getElementById('note-view').innerHTML = `
+      <div class="note-title">${title}</div>
+      <div class="note-meta">📂 ${path}</div>
+      <div class="md-body">${contentHtml}</div>`;
+    return;
+  }
+
+  // Rendu classique pour le texte (.md, .txt)
+  const raw = fileData.content || '';
 
   // extract tags
   const tagMatches = [...raw.matchAll(/#([\w-]+)/g)].map(m => m[1]).filter(t => t.length > 1);
   const tagsHtml = tagMatches.length ? `<div style="margin-bottom:20px">${tagMatches.map(t=>`<span class="tag-badge">#${t}</span>`).join('')}</div>` : '';
 
-  // strip tag lines from end, render markdown
   const cleaned = raw.replace(/^(#[\w-]+ *)+$/gm, '').trim();
 
   // handle [[wikilinks]]
@@ -435,7 +467,6 @@ function renderNote(path) {
     ${tagsHtml}
     <div class="md-body">${html}</div>`;
 
-  // checkboxes interactive
   document.querySelectorAll('.md-body input[type="checkbox"]').forEach(cb => {
     cb.disabled = false;
   });
@@ -456,12 +487,13 @@ function onSearch(q) {
   if (!q.trim()) { box.classList.remove('open'); return; }
   const results = [];
   const ql = q.toLowerCase();
-  Object.entries(vault).forEach(([path, content]) => {
+  Object.entries(vault).forEach(([path, fileData]) => {
+    const content = fileData.type === "text" ? fileData.content : "";
     if (path.toLowerCase().includes(ql) || content.toLowerCase().includes(ql)) {
       const idx = content.toLowerCase().indexOf(ql);
       const snippet = idx >= 0 ? content.slice(Math.max(0, idx - 40), idx + 80) : '';
       const highlighted = snippet.replace(new RegExp(q, 'gi'), m => `<mark>${m}</mark>`);
-      results.push({ path, title: path.split('/').pop().replace('.md',''), snippet: highlighted });
+      results.push({ path, title: path.split('/').pop(), snippet: highlighted });
     }
   });
   if (!results.length) { box.innerHTML = '<div class="search-result-item"><span class="sr-title" style="color:var(--text3)">Aucun résultat</span></div>'; }
