@@ -170,6 +170,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);height:
     <div class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <span>📁 Fichiers</span>
+        <button class="row-btn" title="Nouvelle note" onclick="showNewNoteModal()" style="font-size:16px;padding:2px 6px;">✏️</button>
+        <button class="row-btn" title="Nouveau dossier" onclick="showNewFolderModal()" style="font-size:16px;padding:2px 6px;">📁</button>
       </div>
       <div class="file-tree" id="file-tree"></div>
       <div class="import-panel">
@@ -245,27 +247,28 @@ async function handleFolderUpload(e) {
   const total = files.length;
   if (!total) { setStatus("⚠️ Aucun fichier .md trouvé."); return; }
   showProgress(0);
-  setStatus(`⏳ Import de ${total} fichiers…`);
+  setStatus(`⏳ 0 / ${total} notes chargées…`);
   let done = 0;
-  const BATCH = 50;
-  for (let i = 0; i < files.length; i += BATCH) {
-    const batch = files.slice(i, i + BATCH);
-    await Promise.all(batch.map(f => new Promise(resolve => {
-      const reader = new FileReader();
-      reader.onload = ev => {
-        vault[f.webkitRelativePath] = ev.target.result;
-        done++;
-        showProgress(Math.round(done / total * 100));
-        if (done % 100 === 0) setStatus(`⏳ ${done}/${total} notes chargées…`);
-        resolve();
-      };
-      reader.readAsText(f);
-    })));
+  // Lecture via f.text() (API moderne, plus fiable que FileReader)
+  // On yield au navigateur toutes les 20 notes pour ne pas bloquer l'UI
+  for (const f of files) {
+    try {
+      vault[f.webkitRelativePath] = await f.text();
+    } catch(err) {
+      console.warn('Fichier ignoré :', f.webkitRelativePath, err);
+    }
+    done++;
+    if (done % 20 === 0 || done === total) {
+      showProgress(Math.round(done / total * 100));
+      setStatus(`⏳ ${done} / ${total} notes chargées…`);
+      // Yield au navigateur pour qu'il reste réactif
+      await new Promise(r => setTimeout(r, 0));
+    }
   }
   renderTree();
   hideProgress();
   const rootName = files[0].webkitRelativePath.split('/')[0];
-  setStatus(`✅ ${total} note${total>1?'s':''} importée${total>1?'s':''} depuis "${rootName}" !`);
+  setStatus(`✅ ${done} note${done>1?'s':''} importée${done>1?'s':''} depuis "${rootName}" !`);
   setTimeout(() => setStatus(''), 6000);
   e.target.value = '';
 }
@@ -366,6 +369,8 @@ function renderNode(node, prefix) {
   });
   entries.forEach(([name, value]) => {
     const fullPath = prefix ? prefix + '/' + name : name;
+    // Cacher les fichiers .keep (marqueurs de dossiers vides)
+    if (name === '.keep') return;
     if (typeof value === 'string' && value.startsWith('__FILE__')) {
       const path = value.replace('__FILE__','');
       const label = name.replace(/\.md$/i,'');
@@ -395,6 +400,8 @@ function renderNode(node, prefix) {
         <span class="icon">📁</span>
         <span class="label">${name}</span>
         <span class="row-actions">
+          <button class="row-btn" title="Nouvelle note ici" onclick="event.stopPropagation();showNewNoteModal('${esc(fullPath)}')">✏️</button>
+          <button class="row-btn" title="Nouveau sous-dossier" onclick="event.stopPropagation();showNewFolderModal('${esc(fullPath)}')">📁</button>
           <button class="row-btn" title="Déplacer" onclick="event.stopPropagation();showMoveModal('${esc(fullPath)}','folder')">✂️</button>
           <button class="row-btn del" title="Supprimer" onclick="event.stopPropagation();showDeleteModal('${esc(fullPath)}','folder')">🗑️</button>
         </span>
@@ -503,6 +510,76 @@ function onSearch(q) {
   box.classList.add('open');
 }
 function closeSearch() { document.getElementById('search-results').classList.remove('open'); document.getElementById('search-input').value=''; }
+
+/* ── NEW NOTE ── */
+function showNewNoteModal(defaultFolder) {
+  const folders = ['(racine)', ...getFolders()];
+  const opts = folders.map(f => `<option value="${esc(f)}"${defaultFolder===f?' selected':''}>${f}</option>`).join('');
+  showModal(`<h3>✏️ Nouvelle note</h3>
+    <input type="text" id="new-note-name" placeholder="Nom de la note…" autofocus>
+    <select id="new-note-folder">${opts}</select>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn-confirm" onclick="doCreateNote()">Créer</button>
+    </div>`);
+  setTimeout(() => document.getElementById('new-note-name').focus(), 50);
+  document.getElementById('new-note-name').addEventListener('keydown', e => { if (e.key==='Enter') doCreateNote(); });
+}
+
+function doCreateNote() {
+  let name = (document.getElementById('new-note-name').value || '').trim();
+  if (!name) { document.getElementById('new-note-name').style.borderColor='var(--red)'; return; }
+  if (!name.endsWith('.md')) name += '.md';
+  let folder = document.getElementById('new-note-folder').value;
+  if (folder === '(racine)') folder = '';
+  const path = folder ? folder + '/' + name : name;
+  if (vault[path]) {
+    document.getElementById('new-note-name').style.borderColor='var(--red)';
+    document.getElementById('new-note-name').title = 'Ce fichier existe déjà';
+    return;
+  }
+  vault[path] = '# ' + name.replace(/\.md$/i, '') + '\n\n';
+  closeModal();
+  renderTree();
+  openNote(path);
+}
+
+/* ── NEW FOLDER ── */
+function showNewFolderModal(defaultParent) {
+  const folders = ['(racine)', ...getFolders()];
+  const opts = folders.map(f => `<option value="${esc(f)}"${defaultParent===f?' selected':''}>${f}</option>`).join('');
+  showModal(`<h3>📁 Nouveau dossier</h3>
+    <input type="text" id="new-folder-name" placeholder="Nom du dossier…" autofocus>
+    <label style="color:var(--text2);font-size:.82rem;margin-bottom:4px;display:block">Créer dans :</label>
+    <select id="new-folder-parent">${opts}</select>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn-confirm" onclick="doCreateFolder()">Créer</button>
+    </div>`);
+  setTimeout(() => document.getElementById('new-folder-name').focus(), 50);
+  document.getElementById('new-folder-name').addEventListener('keydown', e => { if (e.key==='Enter') doCreateFolder(); });
+}
+
+function doCreateFolder() {
+  let name = (document.getElementById('new-folder-name').value || '').trim();
+  if (!name) { document.getElementById('new-folder-name').style.borderColor='var(--red)'; return; }
+  // Nettoyer le nom (pas de / ni caractères interdits)
+  name = name.replace(/[/\\:*?"<>|]/g, '-');
+  let parent = document.getElementById('new-folder-parent').value;
+  if (parent === '(racine)') parent = '';
+  const folderPath = parent ? parent + '/' + name : name;
+  // Vérifier que ce dossier n'existe pas déjà
+  const exists = Object.keys(vault).some(p => p === folderPath || p.startsWith(folderPath + '/'));
+  if (exists) {
+    document.getElementById('new-folder-name').style.borderColor='var(--red)';
+    document.getElementById('new-folder-name').placeholder = 'Ce dossier existe déjà';
+    return;
+  }
+  // Créer un fichier .keep invisible pour matérialiser le dossier
+  vault[folderPath + '/.keep'] = '';
+  closeModal();
+  renderTree();
+}
 
 /* ── DELETE ── */
 function showDeleteModal(path, type) {
