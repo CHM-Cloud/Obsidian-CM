@@ -184,7 +184,13 @@
   .upload-zone:hover { border-color: var(--purple); background: rgba(124,106,247,0.06); }
   .upload-zone p { font-size: 0.78rem; color: var(--text3); line-height: 1.5; }
   .upload-zone strong { color: var(--purple2); }
-  #file-input { display: none; }
+  .upload-actions { display: flex; gap: 8px; justify-content: center; margin-top: 8px; }
+  .upload-btn {
+    background: var(--bg3); border: 1px solid var(--border); padding: 4px 8px; 
+    border-radius: 4px; color: var(--text); font-size: 0.75rem; cursor: pointer;
+  }
+  .upload-btn:hover { border-color: var(--purple); color: var(--purple2); }
+  #dir-input, #file-input { display: none; }
 
   @media (max-width: 700px) {
     .sidebar { width: 200px; }
@@ -224,10 +230,15 @@
       </div>
       <div class="file-tree" id="file-tree"></div>
 
-      <div class="upload-zone" onclick="document.getElementById('file-input').click()">
-        <p>⬆️ <strong>Importer des fichiers</strong><br>Notes (.md, .txt) ou documents/images</p>
+      <div class="upload-zone">
+        <p>⬆️ <strong>Importer du contenu</strong><br>Glissez un dossier ou des fichiers ici</p>
+        <div class="upload-actions">
+          <button class="upload-btn" onclick="document.getElementById('dir-input').click()">📁 Dossier</button>
+          <button class="upload-btn" onclick="document.getElementById('file-input').click()">📄 Fichier(s)</button>
+        </div>
       </div>
-      <input type="file" id="file-input" multiple onchange="handleFileUpload(event)">
+      <input type="file" id="dir-input" webkitdirectory directory multiple onchange="handleFileUpload(event)">
+      <input type="file" id="file-input" multiple accept=".md,.txt,image/*,application/pdf" onchange="handleFileUpload(event)">
     </div>
 
     <div class="content-area">
@@ -236,7 +247,7 @@
         <div class="empty-state">
           <span class="big-icon">🔮</span>
           <p>Sélectionnez un fichier ou une note dans le panneau gauche</p>
-          <p style="font-size:0.8rem">ou importez vos documents</p>
+          <p style="font-size:0.8rem">Glissez-déposez votre dossier de coffre Obsidian directement ici</p>
         </div>
       </div>
     </div>
@@ -249,9 +260,10 @@ const VAULT_PASSWORD = "3R$8T@cfG#PPhwiI9f";
 const VAULT_NAME     = "Coffre CM";
 
 /* ─── STATE ─────────────────────────────────────────────── */
-let vault      = {};    // { "path/to/file.ext": { type: "text|binary", content: "..." } }
-let openTabs   = [];    // [{ path, title }]
+let vault      = {};       // { "Folder/file.ext": { type: "text|binary", content: "..." } }
+let openTabs   = [];       // [{ path, title }]
 let activeTab  = null;
+let openedFolders = {};    // Stocke l'état d'ouverture des dossiers : { "folderId": true/false }
 
 /* ─── AUTH ───────────────────────────────────────────────── */
 function checkPassword() {
@@ -273,56 +285,83 @@ function loadDemo() {
   const demo = {
     "README.md": {
       type: "text",
-      content: `# Bienvenue dans votre coffre 👋\n\nCeci est un aperçu de votre coffre Obsidian sur le web.\n\n## Fonctionnalités\n\n- 📁 Navigation par dossiers\n- 🔍 Recherche plein texte\n- 📝 Rendu Markdown complet\n- ⬆️ Import de TOUS vos fichiers (images, notes, documents)\n- 🏷️ Support des tags\n\n## Comment importer vos documents ?\n\n1. Cliquez sur la zone **Importer des fichiers** dans le panneau gauche\n2. Sélectionnez n'importe quel fichier (ex: \`.md\`, \`.txt\`, \`.png\`, \`.jpg\`)\n3. Ils apparaîtront automatiquement dans l'arborescence\n\n#bienvenue #guide`
-    },
-    "Journal/2025-01-15.md": {
-      type: "text",
-      content: `# Journal — 15 janvier 2025\n\n## Ce que j'ai fait aujourd'hui\n\n- [x] Réunion d'équipe à 9h\n- [x] Revue du projet Alpha\n\n#journal #travail`
+      content: `# Bienvenue dans votre coffre 👋\n\nCeci est un aperçu de votre coffre Obsidian sur le web.\n\n## Nouveauté : Arborescence persistante !\n\nLes dossiers restent maintenant ouverts lorsque vous naviguez ou ouvrez vos notes.\n\n#bienvenue #guide`
     }
   };
   Object.assign(vault, demo);
   renderTree();
 }
 
-/* ─── FILE UPLOAD ────────────────────────────────────────── */
-function processFiles(files) {
-  let count = 0;
-  if (files.length === 0) return;
-
-  files.forEach(f => {
+/* ─── FILE & FOLDER UPLOAD ───────────────────────────────── */
+function readFile(file, customPath) {
+  return new Promise((resolve) => {
     const reader = new FileReader();
-    const isText = f.name.endsWith('.md') || f.name.endsWith('.txt');
+    const path = customPath || file.webkitRelativePath || file.name;
+    
+    if (path.includes('/.') || path.startsWith('.')) {
+      resolve();
+      return;
+    }
+
+    const isText = path.endsWith('.md') || path.endsWith('.txt');
 
     reader.onload = ev => {
-      vault[f.name] = {
+      vault[path] = {
         type: isText ? "text" : "binary",
         content: ev.target.result,
-        mimeType: f.type
+        mimeType: file.type
       };
-      count++;
-      if (count === files.length) renderTree();
+      resolve();
     };
 
     if (isText) {
-      reader.readAsText(f);
+      reader.readAsText(file);
     } else {
-      reader.readAsDataURL(f); // Pratique pour charger directement des images ou médias
+      reader.readAsDataURL(file);
     }
   });
 }
 
-function handleFileUpload(e) {
+async function handleFileUpload(e) {
   const files = Array.from(e.target.files);
-  processFiles(files);
+  for (const file of files) {
+    await readFile(file);
+  }
+  renderTree();
   e.target.value = '';
 }
 
-// Drag & drop on sidebar
 document.querySelector('.sidebar').addEventListener('dragover', e => e.preventDefault());
-document.querySelector('.sidebar').addEventListener('drop', e => {
+document.querySelector('.sidebar').addEventListener('drop', async e => {
   e.preventDefault();
-  const files = Array.from(e.dataTransfer.files);
-  processFiles(files);
+  const items = Array.from(e.dataTransfer.items);
+  
+  async function traverseFileTree(item, path = "") {
+    if (item.isFile) {
+      await new Promise((resolve) => {
+        item.file(async file => {
+          await readFile(file, path + file.name);
+          resolve();
+        });
+      });
+    } else if (item.isDirectory) {
+      const dirReader = item.createReader();
+      const entries = await new Promise((resolve) => {
+        dirReader.readEntries(res => resolve(res));
+      });
+      for (const entry of entries) {
+        await traverseFileTree(entry, path + item.name + "/");
+      }
+    }
+  }
+
+  for (const item of items) {
+    const entry = item.webkitGetAsEntry();
+    if (entry) {
+      await traverseFileTree(entry);
+    }
+  }
+  renderTree();
 });
 
 /* ─── TREE ───────────────────────────────────────────────── */
@@ -369,9 +408,11 @@ function renderNode(node, prefix) {
         <span class="icon">${icon}</span><span>${label}</span></div>`;
     } else {
       const folderId = 'folder-' + btoa(prefix + name).replace(/[^a-z0-9]/gi,'');
-      html += `<div class="tree-folder" onclick="toggleFolder('${folderId}')">
+      const isFolderOpen = openedFolders[folderId] === true;
+      
+      html += `<div class="tree-folder${isFolderOpen ? ' open' : ''}" onclick="toggleFolder('${folderId}')">
         <span class="arrow">▶</span><span class="icon">📁</span><span>${name}</span></div>
-        <div class="tree-children" id="${folderId}">${renderNode(value, prefix + name + '/')}</div>`;
+        <div class="tree-children${isFolderOpen ? ' open' : ''}" id="${folderId}">${renderNode(value, prefix + name + '/')}</div>`;
     }
   });
   return html;
@@ -379,8 +420,12 @@ function renderNode(node, prefix) {
 
 function toggleFolder(id) {
   const el = document.getElementById(id);
+  const folderHeader = el.previousElementSibling;
+  
   el.classList.toggle('open');
-  el.previousElementSibling.classList.toggle('open');
+  folderHeader.classList.toggle('open');
+  
+  openedFolders[id] = el.classList.contains('open');
 }
 
 /* ─── TABS ───────────────────────────────────────────────── */
@@ -427,8 +472,7 @@ function renderNote(path) {
   const title = path.split('/').pop();
 
   if (fileData.type === "binary") {
-    // Rendu pour un fichier générique (Exemple : Images)
-    let contentHtml = `<p style="color:var(--text2)">Fichier joint non textuel (${fileData.mimeType || 'Inconnu'})</p>`;
+    let contentHtml = `<p style="color:var(--text2)">Fichier joint (${fileData.mimeType || 'Inconnu'})</p>`;
     
     if (fileData.mimeType && fileData.mimeType.startsWith('image/')) {
       contentHtml = `<img src="${fileData.content}" alt="${title}" style="max-width:100%; max-height: 500px; border-radius: var(--r);">`;
@@ -443,16 +487,11 @@ function renderNote(path) {
     return;
   }
 
-  // Rendu classique pour le texte (.md, .txt)
   const raw = fileData.content || '';
-
-  // extract tags
   const tagMatches = [...raw.matchAll(/#([\w-]+)/g)].map(m => m[1]).filter(t => t.length > 1);
   const tagsHtml = tagMatches.length ? `<div style="margin-bottom:20px">${tagMatches.map(t=>`<span class="tag-badge">#${t}</span>`).join('')}</div>` : '';
-
   const cleaned = raw.replace(/^(#[\w-]+ *)+$/gm, '').trim();
 
-  // handle [[wikilinks]]
   const withLinks = cleaned.replace(/\[\[([^\]]+)\]\]/g, (_, inner) => {
     const [target, alias] = inner.split('|');
     const label = alias || target;
