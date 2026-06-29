@@ -213,6 +213,7 @@ let vault    = {};   // { "path/note.md": "contenu" }
 let openTabs = [];
 let activeTab = null;
 let dragSrc   = null;
+let openFolders = new Set(); // dossiers ouverts
 
 /* ── AUTH ── */
 function checkPassword() {
@@ -356,6 +357,15 @@ function buildTree(paths) {
   return root;
 }
 
+function hashStr(str) {
+  // Hash simple mais unique basé sur le chemin complet
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = Math.imul(31, h) + str.charCodeAt(i) | 0;
+  }
+  return Math.abs(h).toString(36);
+}
+
 function renderTree() {
   document.getElementById('file-tree').innerHTML = renderNode(buildTree(Object.keys(vault)), '');
 }
@@ -389,9 +399,10 @@ function renderNode(node, prefix) {
         </span>
       </div>`;
     } else {
-      const fid = 'f' + btoa(encodeURIComponent(fullPath)).replace(/[^a-z0-9]/gi,'').slice(0,20);
-      html += `<div class="tree-row" draggable="true"
-        onclick="toggleFolder('${fid}',this)"
+      const fid = 'f' + hashStr(fullPath);
+      const isOpen = openFolders.has(fid);
+      html += `<div class="tree-row${isOpen?' open':''}" draggable="true" data-fid="${fid}"
+        onclick="toggleFolder('${fid}',event)"
         ondragstart="dragStart(event,'${esc(fullPath)}','folder')"
         ondragover="event.preventDefault();this.classList.add('drag-over')"
         ondragleave="this.classList.remove('drag-over')"
@@ -406,7 +417,7 @@ function renderNode(node, prefix) {
           <button class="row-btn del" title="Supprimer" onclick="event.stopPropagation();showDeleteModal('${esc(fullPath)}','folder')">🗑️</button>
         </span>
       </div>
-      <div class="tree-children" id="${fid}">${renderNode(value, fullPath)}</div>`;
+      <div class="tree-children${isOpen?' open':''}" id="${fid}">${renderNode(value, fullPath)}</div>`;
     }
   });
   return html;
@@ -414,9 +425,10 @@ function renderNode(node, prefix) {
 
 function esc(s) { return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
 
-function toggleFolder(id, el) {
-  document.getElementById(id).classList.toggle('open');
-  el.classList.toggle('open');
+function toggleFolder(folderId, e) {
+  if (openFolders.has(folderId)) openFolders.delete(folderId);
+  else openFolders.add(folderId);
+  renderTree();
 }
 
 /* ── DRAG & DROP dans l'arbre ── */
@@ -443,6 +455,13 @@ function openNote(path) {
     openTabs.push({ path, title: path.split('/').pop().replace(/\.md$/i,'') });
   }
   activeTab = path;
+  // Auto-ouvrir les dossiers parents
+  const parts = path.split('/');
+  for (let i = 1; i < parts.length; i++) {
+    const folderPath = parts.slice(0, i).join('/');
+    const fid = 'f' + hashStr(folderPath);
+    openFolders.add(fid);
+  }
   renderTabs(); renderNote(path); renderTree();
 }
 
