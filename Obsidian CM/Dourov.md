@@ -1,0 +1,17 @@
+D’abord, qq éléments sur Dourov. Avant d’être le fondateur de Telegram, c’était surtout celui de Vkontakte, le grand réseau social russe. Dourov a joué un rôle important dans les grandes manifs anti Poutine de 2011-2012, en refusant de coopérer avec le FSB 2/14
+Il en a été expulsé en 2014, après avoir refusé une énième demande de coopération. J’en parlais il y a 10 ans (déjà !) dans cet article.
+Persona non grata en Russie, Dourov devient globe-trotter de luxe. Il fonde Telegram, qui aura le succès qu’on lui connaît. En 2018, il est de nouveau dans le colimateur des autorités russes qui tentent, sans succès, de bloquer Telegram dans le pays 4/14
+A l’époque, Dourov inflige une défaite symbolique forte au pouvoir russe qui, par son incapacité à bloquer TG, met en lumière l’impuissance de la Russie à réguler son cyberespace. Là encore, il refuse officiellement la collaboration avec le FSB. novayagazeta.ru/articles/2018/… 5/14
+Depuis cette date, Telegram n’a jamais plus été vraiment inquiété par les services de sécurité. L’application est même aujourd’hui utilisée par certaines unités militaires russes sur le front ukrainien x.com/sambendett/sta… 6/13
+
+Comment expliquer un tel revirement ? On peut toujours postuler un accord secret avec les autorités russes, mais cela n'explique pas tout. Le concept de pouvoir topologique aide à comprendre ce qui a pu se jouer et ce qui se joue dans les terribles geôles de la République 7/14
+En effet, Dourov a bâti un empire qui connecte aujourd’hui plus de 1 milliard d’être humains. De ce fait, il dispose de ce que l’on appelle en géographie un « pouvoir topologique » immense, cad qu’il maîtrise un nœud stratégique du cyberespace et en retire un pouvoir considérable
+Du point de vue des autorités russes, il est probablement devenu un acteur trop important, trop central dans le "Runet" dont Telegram est un rouage essentiel. 9/14
+Parmi les différents pouvoirs topologiques qu’il exerce, il en est un qui est à mes yeux crucial : c’est celui qui résulte du fait que Telegram est devenu le principal vecteur de l’influence informationnelle de la Russie dans le monde. 10/14
+C’est notamment le cas de la couverture de la guerre en Ukraine, où nombre de milbloggers participent ainsi à sa publicisation. Autrement dit, Telegram est devenu le réseau où s’attribuent les défaites et les victoires, et où s'écrivent 1 partie des archives de ce conflit 11/14
+Cette réflexion sur la narration de la guerre à l’heure de l’OSINT et du « renseignement participatif » était d’ailleurs au cœur du numéro de la @RevueHerodote  que nous avons dirigé avec @maximeaudinet  en 2022 et que vous pouvez retrouver ici : herodote.org/spip.php?rubri… 12/14
+Autrement dit, Dourov joue un rôle crucial dans la dimension narrative (certains diront cognitive) de cette guerre. Mais son pouvoir topologique ne s'arrête pas là, comme en témoigne le rôle central de TG pour la coordination des groupes paramilitaires russes en Afrique 13/14
+S’il est trop tôt pour savoir quelles seront les conséquences de son arrestation, ayons en tête que la France détient là un personnage d'une ampleur géopolitique rare. Même si a priori cela n'est pas directement relié aux chefs d'accusation pour lesquels ils est incarcéré 14/14
+https://x.com/idrissaberkane/status/1827808144308797952?t=ff_zDBTuzM5e3xG7dL6G7A&s=19
+
+https://x.com/kevinlimonier/status/1827754859917095350?t=KW7qofl5GdW4Ee61lVeO7g&s=19h
