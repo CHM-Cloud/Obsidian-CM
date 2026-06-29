@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon Coffre Obsidian</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<style>
+  /* ── TOKENS ─────────────────────────────────────────────── */
+  :root {
+    --bg:        #0d0f12;
+    --bg2:       #13161a;
+    --bg3:       #1a1e24;
+    --border:    #252a32;
+    --purple:    #7c6af7;
+    --purple2:   #a99cf9;
+    --text:      #cdd6f4;
+    --text2:     #7f849c;
+    --text3:     #45475a;
+    --green:     #a6e3a1;
+    --yellow:    #f9e2af;
+    --red:       #f38ba8;
+    --r:         6px;
+    --font-body: 'Segoe UI', system-ui, sans-serif;
+    --font-mono: 'Fira Code', 'Cascadia Code', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); height: 100vh; overflow: hidden; }
+
+  /* ── LOGIN ─────────────────────────────────────────────── */
+  #login-screen {
+    position: fixed; inset: 0; background: var(--bg);
+    display: flex; align-items: center; justify-content: center; z-index: 999;
+  }
+  .login-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 48px 40px; width: 360px; text-align: center;
+  }
+  .login-card .vault-icon {
+    width: 56px; height: 56px; background: linear-gradient(135deg, var(--purple), #c084fc);
+    border-radius: 14px; margin: 0 auto 24px; display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+  }
+  .login-card h1 { font-size: 1.4rem; font-weight: 600; margin-bottom: 6px; }
+  .login-card p { color: var(--text2); font-size: 0.875rem; margin-bottom: 28px; }
+  .login-card input {
+    width: 100%; padding: 11px 16px; background: var(--bg3); border: 1px solid var(--border);
+    border-radius: var(--r); color: var(--text); font-size: 1rem; outline: none;
+    transition: border-color 0.2s; margin-bottom: 14px;
+  }
+  .login-card input:focus { border-color: var(--purple); }
+  .login-card button {
+    width: 100%; padding: 12px; background: var(--purple); border: none; border-radius: var(--r);
+    color: #fff; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.2s;
+  }
+  .login-card button:hover { background: var(--purple2); }
+  .login-error { color: var(--red); font-size: 0.8rem; margin-top: 10px; min-height: 18px; }
+
+  /* ── MAIN LAYOUT ───────────────────────────────────────── */
+  #app { display: none; height: 100vh; flex-direction: column; }
+  #app.visible { display: flex; }
+
+  .topbar {
+    height: 42px; background: var(--bg2); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; padding: 0 16px; gap: 12px; flex-shrink: 0;
+  }
+  .topbar .vault-name { font-weight: 600; color: var(--purple2); font-size: 0.95rem; }
+  .topbar .spacer { flex: 1; }
+  .topbar .search-wrap { position: relative; }
+  .topbar .search-wrap input {
+    background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r);
+    padding: 5px 10px 5px 30px; color: var(--text); font-size: 0.85rem; width: 220px; outline: none;
+    transition: border-color 0.2s;
+  }
+  .topbar .search-wrap input:focus { border-color: var(--purple); }
+  .topbar .search-wrap .search-icon {
+    position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 13px;
+  }
+  .search-results {
+    position: absolute; top: calc(100% + 6px); left: 0; width: 340px; background: var(--bg2);
+    border: 1px solid var(--border); border-radius: var(--r); z-index: 100; max-height: 260px; overflow-y: auto;
+    display: none;
+  }
+  .search-results.open { display: block; }
+  .search-result-item {
+    padding: 8px 14px; cursor: pointer; font-size: 0.875rem; border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .search-result-item:hover { background: var(--bg3); }
+  .search-result-item .sr-title { color: var(--text); }
+  .search-result-item .sr-path { color: var(--text3); font-size: 0.75rem; margin-top: 2px; }
+  .search-result-item mark { background: var(--purple); color: #fff; border-radius: 2px; padding: 0 2px; }
+
+  .workspace { display: flex; flex: 1; overflow: hidden; }
+
+  /* ── SIDEBAR ───────────────────────────────────────────── */
+  .sidebar {
+    width: 260px; background: var(--bg2); border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; flex-shrink: 0; overflow: hidden;
+  }
+  .sidebar-header {
+    padding: 14px 16px 10px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sidebar-header span { font-size: 0.8rem; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; }
+  .file-tree { flex: 1; overflow-y: auto; padding: 8px 0; }
+  .file-tree::-webkit-scrollbar { width: 4px; }
+  .file-tree::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .tree-folder, .tree-file {
+    display: flex; align-items: center; gap: 7px; padding: 5px 10px 5px;
+    cursor: pointer; font-size: 0.875rem; border-radius: 4px; margin: 1px 6px;
+    transition: background 0.15s; user-select: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .tree-folder:hover, .tree-file:hover { background: var(--bg3); }
+  .tree-file.active { background: rgba(124,106,247,0.2); color: var(--purple2); }
+  .tree-folder .arrow { font-size: 10px; color: var(--text3); transition: transform 0.2s; flex-shrink: 0; }
+  .tree-folder.open .arrow { transform: rotate(90deg); }
+  .tree-folder .icon { color: var(--yellow); flex-shrink: 0; }
+  .tree-file .icon { color: var(--purple2); flex-shrink: 0; }
+  .tree-children { display: none; padding-left: 16px; }
+  .tree-children.open { display: block; }
+
+  /* ── CONTENT ───────────────────────────────────────────── */
+  .content-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .content-tabs {
+    display: flex; align-items: center; background: var(--bg2); border-bottom: 1px solid var(--border);
+    padding: 0 12px; gap: 2px; flex-shrink: 0; min-height: 38px; overflow-x: auto;
+  }
+  .tab {
+    display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 4px 4px 0 0;
+    cursor: pointer; font-size: 0.82rem; white-space: nowrap; border-bottom: 2px solid transparent;
+    color: var(--text2); transition: color 0.15s, background 0.15s;
+  }
+  .tab:hover { color: var(--text); background: var(--bg3); }
+  .tab.active { color: var(--text); border-bottom-color: var(--purple); }
+  .tab .tab-close {
+    width: 14px; height: 14px; display: flex; align-items: center; justify-content: center;
+    border-radius: 3px; color: var(--text3); font-size: 11px;
+  }
+  .tab .tab-close:hover { background: var(--border); color: var(--text); }
+
+  .note-view { flex: 1; overflow-y: auto; padding: 40px 60px; }
+  .note-view::-webkit-scrollbar { width: 6px; }
+  .note-view::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .note-title { font-size: 2rem; font-weight: 700; margin-bottom: 24px; color: var(--text); }
+  .note-meta { color: var(--text3); font-size: 0.8rem; margin-top: -16px; margin-bottom: 28px; }
+
+  /* ── MARKDOWN ──────────────────────────────────────────── */
+  .md-body { line-height: 1.75; max-width: 760px; }
+  .md-body h1 { font-size: 1.75rem; font-weight: 700; margin: 32px 0 14px; color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  .md-body h2 { font-size: 1.35rem; font-weight: 600; margin: 28px 0 12px; color: var(--text); }
+  .md-body h3 { font-size: 1.1rem; font-weight: 600; margin: 22px 0 10px; color: var(--text); }
+  .md-body p { margin-bottom: 16px; color: var(--text); }
+  .md-body a { color: var(--purple2); text-decoration: none; }
+  .md-body a:hover { text-decoration: underline; }
+  .md-body code { font-family: var(--font-mono); background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px; font-size: 0.875em; color: var(--green); }
+  .md-body pre { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r); padding: 18px 20px; overflow-x: auto; margin: 20px 0; }
+  .md-body pre code { background: none; border: none; padding: 0; color: var(--text); font-size: 0.875rem; }
+  .md-body blockquote { border-left: 3px solid var(--purple); padding-left: 16px; color: var(--text2); margin: 20px 0; font-style: italic; }
+  .md-body ul, .md-body ol { padding-left: 24px; margin-bottom: 16px; }
+  .md-body li { margin-bottom: 6px; }
+  .md-body table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+  .md-body th, .md-body td { border: 1px solid var(--border); padding: 10px 14px; text-align: left; }
+  .md-body th { background: var(--bg3); font-weight: 600; }
+  .md-body hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+  .md-body img { max-width: 100%; border-radius: var(--r); }
+  .md-body input[type="checkbox"] { margin-right: 6px; accent-color: var(--purple); }
+  .tag-badge { display: inline-block; background: rgba(124,106,247,0.2); color: var(--purple2); border-radius: 12px; padding: 2px 10px; font-size: 0.78rem; margin: 2px; }
+
+  /* ── WELCOME / EMPTY ───────────────────────────────────── */
+  .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--text3); gap: 12px; }
+  .empty-state .big-icon { font-size: 52px; opacity: 0.4; }
+  .empty-state p { font-size: 0.9rem; }
+
+  /* ── UPLOAD ZONE ───────────────────────────────────────── */
+  .upload-zone {
+    margin: 12px 10px; border: 1.5px dashed var(--border); border-radius: var(--r);
+    padding: 14px; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s;
+    flex-shrink: 0;
+  }
+  .upload-zone:hover { border-color: var(--purple); background: rgba(124,106,247,0.06); }
+  .upload-zone p { font-size: 0.78rem; color: var(--text3); line-height: 1.5; }
+  .upload-zone strong { color: var(--purple2); }
+  #file-input { display: none; }
+
+  @media (max-width: 700px) {
+    .sidebar { width: 200px; }
+    .note-view { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ░░ LOGIN ░░ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="vault-icon">🔒</div>
+    <h1>Mon Coffre Obsidian</h1>
+    <p>Entrez le mot de passe pour accéder aux notes</p>
+    <input type="password" id="pw-input" placeholder="Mot de passe…" autocomplete="current-password">
+    <button onclick="checkPassword()">Accéder au coffre</button>
+    <div class="login-error" id="pw-error"></div>
+  </div>
+</div>
+
+<!-- ░░ APP ░░ -->
+<div id="app">
+  <div class="topbar">
+    <span>🔮</span>
+    <span class="vault-name" id="vault-name">Mon Coffre</span>
+    <div class="spacer"></div>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="Rechercher…" id="search-input" oninput="onSearch(this.value)" onfocus="onSearch(this.value)" onblur="setTimeout(()=>closeSearch(),200)">
+      <div class="search-results" id="search-results"></div>
+    </div>
+  </div>
+
+  <div class="workspace">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <span>📁 Fichiers</span>
+      </div>
+      <div class="file-tree" id="file-tree"></div>
+
+      <!-- Upload zone -->
+      <div class="upload-zone" onclick="document.getElementById('file-input').click()">
+        <p>⬆️ <strong>Importer des notes</strong><br>Cliquez ou glissez des fichiers .md</p>
+      </div>
+      <input type="file" id="file-input" multiple accept=".md,.txt" onchange="handleFileUpload(event)">
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content-area">
+      <div class="content-tabs" id="tabs"></div>
+      <div class="note-view" id="note-view">
+        <div class="empty-state">
+          <span class="big-icon">🔮</span>
+          <p>Sélectionnez une note dans le panneau gauche</p>
+          <p style="font-size:0.8rem">ou importez vos fichiers .md</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ─── CONFIG ─────────────────────────────────────────────── */
+// ⚠️ CHANGEZ CE MOT DE PASSE avant de déployer !
+const VAULT_PASSWORD = "3R$8T@cfG#PPhwiI9f";
+const VAULT_NAME     = "Coffre CM";
+
+/* ─── STATE ─────────────────────────────────────────────── */
+let vault      = {};    // { "path/to/file.md": "content…" }
+let openTabs   = [];    // [{ path, title }]
+let activeTab  = null;
+
+/* ─── AUTH ───────────────────────────────────────────────── */
+function checkPassword() {
+  const val = document.getElementById('pw-input').value;
+  if (val === VAULT_PASSWORD) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').classList.add('visible');
+    document.getElementById('vault-name').textContent = VAULT_NAME;
+    loadDemo();
+  } else {
+    document.getElementById('pw-error').textContent = "Mot de passe incorrect.";
+    document.getElementById('pw-input').select();
+  }
+}
+document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPassword(); });
+
+/* ─── DEMO NOTES ─────────────────────────────────────────── */
+function loadDemo() {
+  const demo = {
+    "README.md": `# Bienvenue dans votre coffre 👋\n\nCeci est un aperçu de votre coffre Obsidian sur le web.\n\n## Fonctionnalités\n\n- 📁 Navigation par dossiers\n- 🔍 Recherche plein texte\n- 📝 Rendu Markdown complet\n- ⬆️ Import de fichiers .md\n- 🏷️ Support des tags\n\n## Comment importer vos notes ?\n\n1. Cliquez sur la zone **Importer des notes** dans le panneau gauche\n2. Sélectionnez vos fichiers \`.md\` depuis votre coffre Obsidian\n3. Ils apparaîtront automatiquement dans l'arborescence\n\n> 💡 **Astuce** : Vous pouvez glisser-déposer plusieurs fichiers d'un coup.\n\n## Exemple de code\n\n\`\`\`python\ndef bonjour(nom):\n    print(f"Bonjour, {nom} !")\n\nbonjour("Obsidian")\n\`\`\`\n\n#bienvenue #guide`,
+    "Journal/2025-01-15.md": `# Journal — 15 janvier 2025\n\n## Ce que j'ai fait aujourd'hui\n\n- [x] Réunion d'équipe à 9h\n- [x] Revue du projet Alpha\n- [ ] Mettre à jour la documentation\n- [ ] Répondre aux emails\n\n## Notes\n\nRéunion productive. Le projet avance bien.\n\nPoints importants :\n- Deadline fixée au **28 février**\n- Besoin de 2 développeurs supplémentaires\n- Budget approuvé à 80%\n\n#journal #travail`,
+    "Journal/2025-01-16.md": `# Journal — 16 janvier 2025\n\n## Idées du matin\n\nQuelques réflexions sur le projet en cours…\n\n| Priorité | Tâche | Statut |\n|----------|-------|--------|\n| Haute | Architecture | ✅ |\n| Haute | Tests | 🔄 |\n| Moyenne | Docs | ⏳ |\n\n#journal #idées`,
+    "Projets/Projet Alpha.md": `# Projet Alpha 🚀\n\n## Objectif\n\nCréer une plateforme de gestion de contenu moderne.\n\n## Équipe\n\n- Chef de projet : Marie\n- Développeurs : Jean, Paul, Sophie\n- Design : Léa\n\n## Planning\n\n### Phase 1 — Conception (terminée)\n- Architecture technique\n- Wireframes validés\n- Stack choisie : Next.js + Supabase\n\n### Phase 2 — Développement (en cours)\n- Backend API : 60%\n- Frontend : 40%\n- Tests : 20%\n\n### Phase 3 — Déploiement\n- Prévu : mars 2025\n\n## Budget\n\n\`\`\`\nTotal alloué :   50 000 €\nDépensé :        18 500 €\nRestant :        31 500 €\n\`\`\`\n\n#projet #alpha #travail`,
+    "Ressources/Liens utiles.md": `# Liens utiles 🔗\n\n## Obsidian\n- [Site officiel](https://obsidian.md)\n- [Documentation](https://help.obsidian.md)\n- [Forum communauté](https://forum.obsidian.md)\n\n## Outils de productivité\n- [Notion](https://notion.so)\n- [Logseq](https://logseq.com)\n- [Roam Research](https://roamresearch.com)\n\n## Hébergement de notes\n- [GitHub Pages](https://pages.github.com) — gratuit\n- [Netlify](https://netlify.com) — gratuit\n- [Vercel](https://vercel.com) — gratuit\n\n#ressources #liens`,
+  };
+  Object.assign(vault, demo);
+  renderTree();
+}
+
+/* ─── FILE UPLOAD ────────────────────────────────────────── */
+function handleFileUpload(e) {
+  const files = Array.from(e.target.files);
+  let count = 0;
+  files.forEach(f => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      vault[f.name] = ev.target.result;
+      count++;
+      if (count === files.length) renderTree();
+    };
+    reader.readAsText(f);
+  });
+  e.target.value = '';
+}
+
+// Drag & drop on sidebar
+document.querySelector('.sidebar').addEventListener('dragover', e => e.preventDefault());
+document.querySelector('.sidebar').addEventListener('drop', e => {
+  e.preventDefault();
+  const files = Array.from(e.dataTransfer.files).filter(f => f.name.endsWith('.md') || f.name.endsWith('.txt'));
+  let count = 0;
+  files.forEach(f => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      vault[f.name] = ev.target.result;
+      count++;
+      if (count === files.length) renderTree();
+    };
+    reader.readAsText(f);
+  });
+});
+
+/* ─── TREE ───────────────────────────────────────────────── */
+function buildTree(paths) {
+  const root = {};
+  paths.forEach(p => {
+    const parts = p.split('/');
+    let node = root;
+    parts.forEach((part, i) => {
+      if (i === parts.length - 1) {
+        node[part] = '__FILE__' + p;
+      } else {
+        node[part] = node[part] || {};
+      }
+      node = node[part];
+    });
+  });
+  return root;
+}
+
+function renderTree() {
+  const paths = Object.keys(vault).sort();
+  const tree = buildTree(paths);
+  document.getElementById('file-tree').innerHTML = renderNode(tree, '');
+}
+
+function renderNode(node, prefix) {
+  let html = '';
+  const entries = Object.entries(node).sort(([a, av], [b, bv]) => {
+    const aIsFile = typeof av === 'string' && av.startsWith('__FILE__');
+    const bIsFile = typeof bv === 'string' && bv.startsWith('__FILE__');
+    if (aIsFile !== bIsFile) return aIsFile ? 1 : -1;
+    return a.localeCompare(b);
+  });
+  entries.forEach(([name, value]) => {
+    if (typeof value === 'string' && value.startsWith('__FILE__')) {
+      const path = value.replace('__FILE__', '');
+      const isActive = activeTab === path;
+      const label = name.replace(/\.md$/i, '');
+      html += `<div class="tree-file${isActive ? ' active' : ''}" onclick="openNote('${path.replace(/'/g,"\\'")}')">
+        <span class="icon">📄</span><span>${label}</span></div>`;
+    } else {
+      const folderId = 'folder-' + btoa(prefix + name).replace(/[^a-z0-9]/gi,'');
+      html += `<div class="tree-folder" onclick="toggleFolder('${folderId}')">
+        <span class="arrow">▶</span><span class="icon">📁</span><span>${name}</span></div>
+        <div class="tree-children" id="${folderId}">${renderNode(value, prefix + name + '/')}</div>`;
+    }
+  });
+  return html;
+}
+
+function toggleFolder(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+  el.previousElementSibling.classList.toggle('open');
+}
+
+/* ─── TABS ───────────────────────────────────────────────── */
+function openNote(path) {
+  if (!openTabs.find(t => t.path === path)) {
+    const title = path.split('/').pop().replace(/\.md$/i, '');
+    openTabs.push({ path, title });
+  }
+  activeTab = path;
+  renderTabs();
+  renderNote(path);
+  renderTree();
+}
+
+function closeTab(path, e) {
+  e.stopPropagation();
+  openTabs = openTabs.filter(t => t.path !== path);
+  if (activeTab === path) {
+    activeTab = openTabs.length ? openTabs[openTabs.length - 1].path : null;
+  }
+  renderTabs();
+  if (activeTab) renderNote(activeTab);
+  else document.getElementById('note-view').innerHTML = `<div class="empty-state"><span class="big-icon">🔮</span><p>Sélectionnez une note</p></div>`;
+  renderTree();
+}
+
+function renderTabs() {
+  const el = document.getElementById('tabs');
+  el.innerHTML = openTabs.map(t => `
+    <div class="tab${t.path === activeTab ? ' active' : ''}" onclick="openNote('${t.path.replace(/'/g,"\\'")}')">
+      📄 ${t.title}
+      <span class="tab-close" onclick="closeTab('${t.path.replace(/'/g,"\\'")}', event)">✕</span>
+    </div>`).join('');
+}
+
+/* ─── RENDER NOTE ────────────────────────────────────────── */
+function renderNote(path) {
+  const raw = vault[path] || '';
+  const title = path.split('/').pop().replace(/\.md$/i, '');
+
+  // extract tags
+  const tagMatches = [...raw.matchAll(/#([\w-]+)/g)].map(m => m[1]).filter(t => t.length > 1);
+  const tagsHtml = tagMatches.length ? `<div style="margin-bottom:20px">${tagMatches.map(t=>`<span class="tag-badge">#${t}</span>`).join('')}</div>` : '';
+
+  // strip tag lines from end, render markdown
+  const cleaned = raw.replace(/^(#[\w-]+ *)+$/gm, '').trim();
+
+  // handle [[wikilinks]]
+  const withLinks = cleaned.replace(/\[\[([^\]]+)\]\]/g, (_, inner) => {
+    const [target, alias] = inner.split('|');
+    const label = alias || target;
+    return `<a href="#" onclick="openWikilink('${target.replace(/'/g,"\\'")}');return false">${label}</a>`;
+  });
+
+  const html = marked.parse(withLinks);
+
+  document.getElementById('note-view').innerHTML = `
+    <div class="note-title">${title}</div>
+    <div class="note-meta">📂 ${path}</div>
+    ${tagsHtml}
+    <div class="md-body">${html}</div>`;
+
+  // checkboxes interactive
+  document.querySelectorAll('.md-body input[type="checkbox"]').forEach(cb => {
+    cb.disabled = false;
+  });
+}
+
+function openWikilink(target) {
+  const match = Object.keys(vault).find(p =>
+    p.toLowerCase().includes(target.toLowerCase()) ||
+    p.toLowerCase().endsWith(target.toLowerCase() + '.md')
+  );
+  if (match) openNote(match);
+  else alert(`Note "${target}" introuvable dans le coffre.`);
+}
+
+/* ─── SEARCH ─────────────────────────────────────────────── */
+function onSearch(q) {
+  const box = document.getElementById('search-results');
+  if (!q.trim()) { box.classList.remove('open'); return; }
+  const results = [];
+  const ql = q.toLowerCase();
+  Object.entries(vault).forEach(([path, content]) => {
+    if (path.toLowerCase().includes(ql) || content.toLowerCase().includes(ql)) {
+      const idx = content.toLowerCase().indexOf(ql);
+      const snippet = idx >= 0 ? content.slice(Math.max(0, idx - 40), idx + 80) : '';
+      const highlighted = snippet.replace(new RegExp(q, 'gi'), m => `<mark>${m}</mark>`);
+      results.push({ path, title: path.split('/').pop().replace('.md',''), snippet: highlighted });
+    }
+  });
+  if (!results.length) { box.innerHTML = '<div class="search-result-item"><span class="sr-title" style="color:var(--text3)">Aucun résultat</span></div>'; }
+  else {
+    box.innerHTML = results.slice(0, 10).map(r => `
+      <div class="search-result-item" onclick="openNote('${r.path.replace(/'/g,"\\'")}');closeSearch()">
+        <div class="sr-title">${r.title}</div>
+        <div class="sr-path">${r.path}</div>
+        ${r.snippet ? `<div style="color:var(--text2);font-size:0.75rem;margin-top:4px">${r.snippet}</div>` : ''}
+      </div>`).join('');
+  }
+  box.classList.add('open');
+}
+
+function closeSearch() {
+  document.getElementById('search-results').classList.remove('open');
+  document.getElementById('search-input').value = '';
+}
+</script>
+</body>
+</html>
