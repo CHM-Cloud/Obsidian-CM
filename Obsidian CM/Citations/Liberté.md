@@ -1,0 +1,1 @@
+La liberté que tu as d’agir ne veut pas dire que tu vas prendre les bonnes et meilleurs décisions. Ca t’ouvres un spectre plus large, mais encore faut il la compétence pour prendre les bonnes décisions.
