@@ -1,0 +1,7 @@
+---
+MOC:
+  - WOKISME
+---
+MOC: [[WOKISME]]
+
+On pourrait y voir une illustration de la banalisation de la cancel culture qui a fait grand bruit ces dernières années aux États-Unis, et qui se répand partout en lien avec l’usage de plus en plus massif des réseaux sociaux. Elle était définie récemment par [Yannick Chatelain](https://theconversation.com/la-cancel-culture-ou-comment-lyncher-sans-reflechir-sur-les-reseaux-sociaux-144095) (École de Management de Grenoble) comme « une logique d’attaque et d’adhésion contrainte » : « C’est bien cette logique, attaques personnelles et usages intempestifs des réseaux sociaux, qui est au cœur de la Cancel Culture. De manière paradoxale, sous couvert de ‘libérer la parole’ cette dernière s’éloigne de la liberté d’expression. Cette Culture ne tolère nul débat autre que l’adhésion tout en ouvrant la porte à la délation et à l’ostracisation. Ainsi, la pratique de la Cancel Culture va viser à faire adhérer des individus à une cause sous peine d’être soupçonnés de soutenir, voire d’être complice de ce qui est dénoncé ». Le problème est que, parfaitement compréhensible dans ses usages polémiques par les militants de telle ou telle « cause », une telle attitude est en contradiction avec les règles de base de la neutralité journalistique.
