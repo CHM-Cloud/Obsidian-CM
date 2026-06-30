@@ -1094,3 +1094,1099 @@ function setGHStatus(icon, label, color) {
 </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Mon Coffre Obsidian</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<style>
+:root {
+  --bg:#0d0f12; --bg2:#13161a; --bg3:#1a1e24; --border:#252a32;
+  --purple:#7c6af7; --purple2:#a99cf9; --text:#cdd6f4; --text2:#7f849c;
+  --text3:#45475a; --green:#a6e3a1; --yellow:#f9e2af; --red:#f38ba8;
+  --r:6px; --font-body:'Segoe UI',system-ui,sans-serif; --font-mono:'Fira Code','Cascadia Code',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);height:100vh;overflow:hidden;}
+
+/* LOGIN */
+#login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;}
+.login-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:48px 40px;width:360px;text-align:center;}
+.vault-icon{width:56px;height:56px;background:linear-gradient(135deg,var(--purple),#c084fc);border-radius:14px;margin:0 auto 24px;display:flex;align-items:center;justify-content:center;font-size:28px;}
+.login-card h1{font-size:1.4rem;font-weight:600;margin-bottom:6px;}
+.login-card p{color:var(--text2);font-size:.875rem;margin-bottom:28px;}
+.login-card input{width:100%;padding:11px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:1rem;outline:none;transition:border-color .2s;margin-bottom:14px;}
+.login-card input:focus{border-color:var(--purple);}
+.login-card button{width:100%;padding:12px;background:var(--purple);border:none;border-radius:var(--r);color:#fff;font-size:1rem;font-weight:600;cursor:pointer;transition:background .2s;}
+.login-card button:hover{background:var(--purple2);}
+.login-error{color:var(--red);font-size:.8rem;margin-top:10px;min-height:18px;}
+
+/* LAYOUT */
+#app{display:none;height:100vh;flex-direction:column;}
+#app.visible{display:flex;}
+.topbar{height:42px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:12px;flex-shrink:0;}
+.topbar .vault-name{font-weight:600;color:var(--purple2);font-size:.95rem;}
+.topbar .spacer{flex:1;}
+.search-wrap{position:relative;}
+.search-wrap input{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:5px 10px 5px 30px;color:var(--text);font-size:.85rem;width:220px;outline:none;transition:border-color .2s;}
+.search-wrap input:focus{border-color:var(--purple);}
+.search-icon{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:13px;}
+.search-results{position:absolute;top:calc(100% + 6px);left:0;width:360px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);z-index:200;max-height:280px;overflow-y:auto;display:none;}
+.search-results.open{display:block;}
+.search-result-item{padding:8px 14px;cursor:pointer;font-size:.875rem;border-bottom:1px solid var(--border);transition:background .15s;}
+.search-result-item:hover{background:var(--bg3);}
+.search-result-item .sr-title{color:var(--text);}
+.search-result-item .sr-path{color:var(--text3);font-size:.75rem;margin-top:2px;}
+.search-result-item mark{background:var(--purple);color:#fff;border-radius:2px;padding:0 2px;}
+.workspace{display:flex;flex:1;overflow:hidden;}
+
+/* SIDEBAR */
+.sidebar{width:270px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;}
+.sidebar-header{padding:12px 14px 8px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;gap:6px;}
+.sidebar-header span{font-size:.78rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;flex:1;}
+.file-tree{flex:1;overflow-y:auto;padding:6px 0;}
+.file-tree::-webkit-scrollbar{width:4px;}
+.file-tree::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+
+/* TREE ITEMS */
+.tree-row{display:flex;align-items:center;padding:4px 8px 4px;cursor:pointer;font-size:.855rem;border-radius:4px;margin:1px 4px;transition:background .15s;user-select:none;position:relative;}
+.tree-row:hover{background:var(--bg3);}
+.tree-row:hover .row-actions{display:flex;}
+.tree-row.active{background:rgba(124,106,247,.2);color:var(--purple2);}
+.tree-row.drag-over{border:1.5px dashed var(--purple);background:rgba(124,106,247,.1);}
+.tree-row .arrow{font-size:9px;color:var(--text3);transition:transform .2s;flex-shrink:0;width:12px;}
+.tree-row.open .arrow{transform:rotate(90deg);}
+.tree-row .icon{flex-shrink:0;margin-right:5px;}
+.tree-row .label{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.row-actions{display:none;align-items:center;gap:2px;flex-shrink:0;}
+.row-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:12px;padding:2px 4px;border-radius:3px;transition:color .15s,background .15s;}
+.row-btn:hover{color:var(--text);background:var(--border);}
+.row-btn.del:hover{color:var(--red);}
+.tree-children{display:none;padding-left:14px;}
+.tree-children.open{display:block;}
+
+/* IMPORT PANEL */
+.import-panel{border-top:1px solid var(--border);padding:10px;flex-shrink:0;display:flex;flex-direction:column;gap:6px;}
+.btn-folder{width:100%;padding:9px;background:var(--purple);border:none;border-radius:var(--r);color:#fff;font-size:.82rem;font-weight:600;cursor:pointer;transition:background .2s;}
+.btn-folder:hover{background:var(--purple2);}
+.upload-zone{border:1.5px dashed var(--border);border-radius:var(--r);padding:10px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;}
+.upload-zone:hover{border-color:var(--purple);background:rgba(124,106,247,.06);}
+.upload-zone p{font-size:.75rem;color:var(--text3);line-height:1.5;}
+.upload-zone strong{color:var(--purple2);}
+#import-status{font-size:.75rem;color:var(--green);min-height:16px;text-align:center;}
+#file-input{display:none;}
+
+/* PROGRESS BAR */
+.progress-wrap{display:none;background:var(--bg3);border-radius:var(--r);overflow:hidden;height:6px;}
+.progress-wrap.visible{display:block;}
+.progress-bar{height:100%;background:var(--purple);transition:width .1s;width:0%;}
+
+/* CONTENT */
+.content-area{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.content-tabs{display:flex;align-items:center;background:var(--bg2);border-bottom:1px solid var(--border);padding:0 12px;gap:2px;flex-shrink:0;min-height:38px;overflow-x:auto;}
+.tab{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:4px 4px 0 0;cursor:pointer;font-size:.82rem;white-space:nowrap;border-bottom:2px solid transparent;color:var(--text2);transition:color .15s,background .15s;}
+.tab:hover{color:var(--text);background:var(--bg3);}
+.tab.active{color:var(--text);border-bottom-color:var(--purple);}
+.tab-close{width:14px;height:14px;display:flex;align-items:center;justify-content:center;border-radius:3px;color:var(--text3);font-size:11px;}
+.tab-close:hover{background:var(--border);color:var(--text);}
+.note-view{flex:1;overflow-y:auto;padding:40px 60px;}
+.note-view::-webkit-scrollbar{width:6px;}
+.note-view::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+.note-title{font-size:2rem;font-weight:700;margin-bottom:8px;color:var(--text);}
+.note-meta{color:var(--text3);font-size:.8rem;margin-bottom:24px;}
+
+/* MARKDOWN */
+.md-body{line-height:1.75;max-width:760px;}
+.md-body h1{font-size:1.75rem;font-weight:700;margin:32px 0 14px;color:var(--text);border-bottom:1px solid var(--border);padding-bottom:8px;}
+.md-body h2{font-size:1.35rem;font-weight:600;margin:28px 0 12px;color:var(--text);}
+.md-body h3{font-size:1.1rem;font-weight:600;margin:22px 0 10px;color:var(--text);}
+.md-body p{margin-bottom:16px;color:var(--text);}
+.md-body a{color:var(--purple2);text-decoration:none;}
+.md-body a:hover{text-decoration:underline;}
+.md-body code{font-family:var(--font-mono);background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:2px 6px;font-size:.875em;color:var(--green);}
+.md-body pre{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;overflow-x:auto;margin:20px 0;}
+.md-body pre code{background:none;border:none;padding:0;color:var(--text);font-size:.875rem;}
+.md-body blockquote{border-left:3px solid var(--purple);padding-left:16px;color:var(--text2);margin:20px 0;font-style:italic;}
+.md-body ul,.md-body ol{padding-left:24px;margin-bottom:16px;}
+.md-body li{margin-bottom:6px;}
+.md-body table{border-collapse:collapse;width:100%;margin:20px 0;}
+.md-body th,.md-body td{border:1px solid var(--border);padding:10px 14px;text-align:left;}
+.md-body th{background:var(--bg3);font-weight:600;}
+.md-body hr{border:none;border-top:1px solid var(--border);margin:28px 0;}
+.md-body img{max-width:100%;border-radius:var(--r);}
+.md-body input[type="checkbox"]{margin-right:6px;accent-color:var(--purple);}
+.tag-badge{display:inline-block;background:rgba(124,106,247,.2);color:var(--purple2);border-radius:12px;padding:2px 10px;font-size:.78rem;margin:2px;}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--text3);gap:12px;}
+.empty-state .big-icon{font-size:52px;opacity:.4;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;display:flex;align-items:center;justify-content:center;}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:28px 32px;min-width:340px;max-width:460px;}
+.modal h3{font-size:1rem;font-weight:600;margin-bottom:16px;}
+.modal input,.modal select{width:100%;padding:9px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:.9rem;outline:none;margin-bottom:12px;}
+.modal input:focus,.modal select:focus{border-color:var(--purple);}
+.modal-btns{display:flex;gap:8px;justify-content:flex-end;margin-top:4px;}
+.modal-btns button{padding:8px 18px;border:none;border-radius:var(--r);font-size:.875rem;cursor:pointer;font-weight:500;}
+.btn-cancel{background:var(--bg3);color:var(--text2);}
+.btn-cancel:hover{background:var(--border);}
+.btn-confirm{background:var(--purple);color:#fff;}
+.btn-confirm:hover{background:var(--purple2);}
+.btn-danger{background:var(--red);color:#fff;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="vault-icon">🔒</div>
+    <h1>Mon Coffre Obsidian</h1>
+    <p>Entrez le mot de passe pour accéder aux notes</p>
+    <input type="password" id="pw-input" placeholder="Mot de passe…" autocomplete="current-password">
+    <button onclick="checkPassword()">Accéder au coffre</button>
+    <div class="login-error" id="pw-error"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <span>🔮</span>
+    <span class="vault-name" id="vault-name">Mon Coffre</span>
+    <div class="spacer"></div>
+    <div id="gh-status" style="font-size:.78rem;color:var(--text3);display:flex;align-items:center;gap:6px;">
+      <span id="gh-indicator">⚙️</span>
+      <span id="gh-label">GitHub non configuré</span>
+      <button onclick="showGHModal()" style="background:var(--bg3);border:1px solid var(--border);color:var(--text2);border-radius:4px;padding:3px 8px;cursor:pointer;font-size:.75rem;">Config</button>
+    </div>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="Rechercher…" id="search-input" oninput="onSearch(this.value)" onfocus="onSearch(this.value)" onblur="setTimeout(closeSearch,200)">
+      <div class="search-results" id="search-results"></div>
+    </div>
+  </div>
+  <div class="workspace">
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <span>📁 Fichiers</span>
+        <button class="row-btn" title="Nouvelle note" onclick="showNewNoteModal()" style="font-size:16px;padding:2px 6px;">✏️</button>
+        <button class="row-btn" title="Nouveau dossier" onclick="showNewFolderModal()" style="font-size:16px;padding:2px 6px;">📁</button>
+        <button class="row-btn" title="Synchroniser avec GitHub" onclick="ghSync()" id="btn-sync" style="font-size:16px;padding:2px 6px;">🔄</button>
+        <button class="row-btn" title="Télécharger toutes les notes" onclick="ghDownloadAll()" id="btn-download-all" style="font-size:16px;padding:2px 6px;">⬇️</button>
+      </div>
+      <div id="vault-counter" style="padding:6px 14px;font-size:.72rem;color:var(--text3);border-bottom:1px solid var(--border);flex-shrink:0;"></div>
+      <div class="file-tree" id="file-tree"></div>
+      <div class="import-panel">
+        <button class="btn-folder" onclick="document.getElementById('folder-input').click()">📂 Importer un dossier entier</button>
+        <input type="file" id="folder-input" webkitdirectory multiple accept=".md,.txt" onchange="handleFolderUpload(event)" style="display:none">
+        <div class="upload-zone" onclick="document.getElementById('file-input').click()">
+          <p>⬆️ <strong>Fichiers individuels</strong><br>Cliquez ou glissez des .md</p>
+        </div>
+        <input type="file" id="file-input" multiple accept=".md,.txt" onchange="handleFileUpload(event)">
+        <div class="progress-wrap" id="progress-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+        <div id="import-status"></div>
+      </div>
+    </div>
+    <div class="content-area">
+      <div class="content-tabs" id="tabs"></div>
+      <div class="note-view" id="note-view">
+        <div class="empty-state">
+          <span class="big-icon">🔮</span>
+          <p>Sélectionnez une note dans le panneau gauche</p>
+          <p style="font-size:.8rem">ou importez votre coffre Obsidian</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" style="display:none" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal-content"></div>
+</div>
+
+<script>
+/* ── CONFIG ── */
+const VAULT_PASSWORD = "QG^9c*jrs27rF5VLEg";
+const VAULT_NAME     = "Mon Coffre";
+
+/* ── GITHUB CONFIG ── stocké dans localStorage du navigateur */
+let GH = {
+  token: localStorage.getItem('gh_token') || '',
+  repo:  localStorage.getItem('gh_repo')  || 'CHM-Cloud/Obsidian-CM',
+  branch:localStorage.getItem('gh_branch')|| 'main',
+};
+function saveGHConfig() {
+  localStorage.setItem('gh_token',  GH.token);
+  localStorage.setItem('gh_repo',   GH.repo);
+  localStorage.setItem('gh_branch', GH.branch);
+}
+
+/* ── STATE ── */
+let vault    = {};   // { "path/note.md": "contenu" }
+let vaultMeta = {};  // { "path/note.md": { localMtime: timestamp, ghMtime: timestamp } } — dates de modification
+let openTabs = [];
+let activeTab = null;
+let dragSrc   = null;
+let openFolders = new Set(); // dossiers ouverts
+
+/* ── AUTH ── */
+function checkPassword() {
+  if (document.getElementById('pw-input').value === VAULT_PASSWORD) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').classList.add('visible');
+    document.getElementById('vault-name').textContent = VAULT_NAME;
+    if (GH.token) {
+      setGHStatus('🔄', 'Chargement…', 'var(--yellow)');
+      ghSync();
+    } else {
+      loadDemo();
+      setGHStatus('⚙️', 'GitHub non configuré', 'var(--text3)');
+    }
+  } else {
+    document.getElementById('pw-error').textContent = "Mot de passe incorrect.";
+    document.getElementById('pw-input').select();
+  }
+}
+document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key==='Enter') checkPassword(); });
+
+/* ── DEMO ── */
+function loadDemo() {
+  vault = {
+    "README.md": "# Bienvenue 👋\n\nImportez votre coffre Obsidian via le bouton **Importer un dossier entier**.\n\n## Fonctionnalités\n\n- 📂 Import dossier complet (sous-dossiers inclus)\n- ⬆️ Import de fichiers individuels\n- 🗑️ Supprimer une note ou un dossier\n- ✂️ Déplacer une note ou un dossier\n- 🔍 Recherche plein texte\n- 📝 Rendu Markdown complet\n- [[Wikilinks]] cliquables\n\n#bienvenue",
+    "Journal/2025-01-15.md": "# Journal — 15 janvier 2025\n\n- [x] Réunion d'équipe\n- [ ] Mettre à jour la doc\n\n#journal",
+    "Projets/Alpha.md": "# Projet Alpha 🚀\n\nEn cours de développement.\n\n#projet",
+  };
+  renderTree();
+}
+
+/* ── IMPORT DOSSIER (Chrome/Edge) ── */
+async function handleFolderUpload(e) {
+  const files = Array.from(e.target.files).filter(f =>
+    (f.name.endsWith('.md') || f.name.endsWith('.txt')) &&
+    !f.webkitRelativePath.split('/').some(p => p.startsWith('.'))
+  );
+  const total = files.length;
+  if (!total) { setStatus("⚠️ Aucun fichier .md trouvé."); return; }
+
+  // ── Étape 1 : lecture locale, avec comparaison de dates ──
+  showProgress(0);
+  setStatus(`⏳ 0 / ${total} notes lues…`);
+  let done = 0, skipped = 0;
+  const skippedPaths = new Set();
+  for (const f of files) {
+    const path = f.webkitRelativePath;
+    const localMtime = f.lastModified; // timestamp ms de dernière modification du fichier
+    const existingMtime = vaultMeta[path]?.localMtime;
+    // Si le fichier existe déjà ET que la version locale n'est pas plus récente → ignorer
+    if (vault[path] !== undefined && existingMtime && localMtime <= existingMtime) {
+      skipped++;
+      skippedPaths.add(path);
+    } else {
+      try {
+        vault[path] = await f.text();
+        vaultMeta[path] = { ...(vaultMeta[path]||{}), localMtime };
+      } catch(err) { console.warn('Fichier ignoré :', path, err); }
+    }
+    done++;
+    if (done % 20 === 0 || done === total) {
+      showProgress(Math.round(done / total * 50)); // 0-50% pour la lecture
+      setStatus(`⏳ Lecture ${done} / ${total}…`);
+      await new Promise(r => setTimeout(r, 0));
+    }
+  }
+  renderTree();
+  const rootName = files[0].webkitRelativePath.split('/')[0];
+  setStatus(`✅ ${done-skipped} note${done-skipped>1?'s':''} mise${done-skipped>1?'s':''} à jour` +
+    (skipped ? `, ${skipped} ignorée${skipped>1?'s':''} (déjà à jour)` : '') +
+    `. ${GH.token ? 'Envoi vers GitHub…' : ''}`);
+
+  // ── Étape 2 : upload vers GitHub si configuré ──
+  if (!GH.token) {
+    hideProgress();
+    setStatus(`✅ ${done} note${done>1?'s':''} importée${done>1?'s':''} depuis "${rootName}" !`);
+    setTimeout(() => setStatus(''), 6000);
+    e.target.value = '';
+    return;
+  }
+
+  // Récupérer les SHAs existants sur GitHub pour éviter les doublons
+  setGHStatus('🔄', `Upload 0/${total}…`, 'var(--yellow)');
+  const existingShas = {};
+  try {
+    await ghCollectShas('', existingShas);
+  } catch(err) { console.warn('Impossible de récupérer les SHAs existants', err); }
+
+  let uploaded = 0;
+  let errors = 0;
+  // N'uploader QUE les fichiers de cet import qui ont été mis à jour localement
+  // (pas tout le vault, et pas ceux ignorés car déjà à jour)
+  const paths = files
+    .map(f => f.webkitRelativePath)
+    .filter(p => !skippedPaths.has(p));
+
+  // Upload 1 par 1 avec retry automatique (ADSL + rate limit GitHub)
+  for (let i = 0; i < paths.length; i++) {
+    const path = paths[i];
+    const ok = await ghUploadOne(path, existingShas[path]);
+    if (ok) uploaded++;
+    else errors++;
+    const pct = 50 + Math.round((i + 1) / paths.length * 50);
+    showProgress(Math.min(pct, 100));
+    setStatus(`⏳ GitHub : ${uploaded}/${paths.length} envoyées…${errors ? ' ⚠️ '+errors+' erreurs' : ''}`);
+    setGHStatus('🔄', `Upload ${uploaded}/${paths.length}`, 'var(--yellow)');
+    // Pause 800ms entre chaque fichier — stable sur ADSL
+    await new Promise(r => setTimeout(r, 800));
+  }
+
+  hideProgress();
+  setStatus(`✅ ${uploaded} notes envoyées sur GitHub !${skipped ? ' · '+skipped+' ignorées (déjà à jour)' : ''}${errors ? ' ('+errors+' erreurs)' : ''}`);
+  setGHStatus('✅', `${uploaded} notes — ${GH.repo}`, 'var(--green)');
+  setTimeout(() => setStatus(''), 8000);
+  e.target.value = '';
+}
+
+/* ── Upload un fichier avec retry automatique ── */
+async function ghUploadOne(path, sha, retries=3) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const body = {
+        message: `Import ${path}`,
+        content: btoa(unescape(encodeURIComponent(vault[path]))),
+        branch: GH.branch,
+      };
+      if (sha) body.sha = sha;
+      const res = await fetch(
+        `https://api.github.com/repos/${GH.repo}/contents/${path}`,
+        { method: 'PUT', headers: ghHeaders(), body: JSON.stringify(body) }
+      );
+      if (res.ok) return true;
+      // Rate limit (403/429) → attendre plus longtemps avant retry
+      if (res.status === 403 || res.status === 429) {
+        const wait = attempt * 3000; // 3s, 6s, 9s
+        setStatus(`⏳ Rate limit GitHub, attente ${wait/1000}s…`);
+        await new Promise(r => setTimeout(r, wait));
+        continue;
+      }
+      console.warn(`Upload failed (${res.status}):`, path);
+      return false;
+    } catch(err) {
+      // Erreur réseau → retry après pause
+      if (attempt < retries) {
+        await new Promise(r => setTimeout(r, attempt * 2000));
+      } else {
+        console.warn('Upload error après', retries, 'tentatives:', path, err);
+        return false;
+      }
+    }
+  }
+  return false;
+}
+
+/* ── Collecter tous les SHAs existants sur GitHub ── */
+async function ghCollectShas(path, result) {
+  const url = path
+    ? `https://api.github.com/repos/${GH.repo}/contents/${path}?ref=${GH.branch}`
+    : `https://api.github.com/repos/${GH.repo}/contents?ref=${GH.branch}`;
+  const res = await ghFetch(url, { headers: ghHeaders() });
+  if (!res.ok) return;
+  const items = await res.json();
+  for (const item of items) {
+    if (item.name.startsWith('.')) continue;
+    if (item.type === 'dir') await ghCollectShas(item.path, result);
+    else result[item.path] = item.sha;
+  }
+}
+
+/* ── IMPORT FICHIERS INDIVIDUELS ── */
+function handleFileUpload(e) {
+  const files = Array.from(e.target.files);
+  let done = 0, skipped = 0;
+  files.forEach(f => {
+    const path = f.name;
+    const localMtime = f.lastModified;
+    const existingMtime = vaultMeta[path]?.localMtime;
+    if (vault[path] !== undefined && existingMtime && localMtime <= existingMtime) {
+      skipped++;
+      done++;
+      if (done === files.length) finishFileUpload(done, skipped);
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = ev => {
+      vault[path] = ev.target.result;
+      vaultMeta[path] = { ...(vaultMeta[path]||{}), localMtime };
+      done++;
+      if (done === files.length) finishFileUpload(done, skipped);
+    };
+    reader.readAsText(f);
+  });
+  e.target.value = '';
+}
+
+function finishFileUpload(done, skipped) {
+  renderTree();
+  const imported = done - skipped;
+  setStatus(`✅ ${imported} fichier${imported>1?'s':''} importé${imported>1?'s':''}` +
+    (skipped ? ` · ${skipped} ignoré${skipped>1?'s':''} (déjà à jour)` : ''));
+  setTimeout(() => setStatus(''), 4000);
+}
+
+/* ── DRAG & DROP sur la sidebar (fichiers et dossiers) ── */
+const sidebar = document.getElementById('sidebar');
+sidebar.addEventListener('dragover', e => e.preventDefault());
+sidebar.addEventListener('drop', async e => {
+  e.preventDefault();
+  const items = Array.from(e.dataTransfer.items);
+  const loaded = {};
+  setStatus("⏳ Import…");
+  for (const item of items) {
+    if (item.kind !== 'file') continue;
+    const entry = item.webkitGetAsEntry ? item.webkitGetAsEntry() : null;
+    if (entry) await readWebkitEntry(entry, '', loaded);
+  }
+  const count = Object.keys(loaded).length;
+  Object.assign(vault, loaded);
+  renderTree();
+  setStatus(`✅ ${count} note${count>1?'s':''} importée${count>1?'s':''}`);
+  setTimeout(() => setStatus(''), 3000);
+});
+
+function readWebkitEntry(entry, prefix, result) {
+  return new Promise(resolve => {
+    if (entry.name.startsWith('.')) { resolve(); return; }
+    if (entry.isFile) {
+      if (!entry.name.endsWith('.md') && !entry.name.endsWith('.txt')) { resolve(); return; }
+      entry.file(f => {
+        const r = new FileReader();
+        r.onload = ev => { result[prefix + entry.name] = ev.target.result; resolve(); };
+        r.readAsText(f);
+      });
+    } else if (entry.isDirectory) {
+      const reader = entry.createReader();
+      const readAll = (acc) => {
+        reader.readEntries(async entries => {
+          if (!entries.length) {
+            for (const e of acc) await readWebkitEntry(e, prefix + entry.name + '/', result);
+            resolve();
+          } else readAll([...acc, ...entries]);
+        });
+      };
+      readAll([]);
+    }
+  });
+}
+
+function showProgress(pct) { document.getElementById('progress-wrap').classList.add('visible'); document.getElementById('progress-bar').style.width = pct + '%'; }
+function hideProgress() { document.getElementById('progress-wrap').classList.remove('visible'); document.getElementById('progress-bar').style.width = '0%'; }
+function setStatus(msg) { document.getElementById('import-status').textContent = msg; }
+
+/* ── TREE RENDER ── */
+function buildTree(paths) {
+  const root = {};
+  paths.sort().forEach(p => {
+    const parts = p.split('/');
+    let node = root;
+    parts.forEach((part, i) => {
+      if (i === parts.length - 1) node[part] = '__FILE__' + p;
+      else { node[part] = node[part] || {}; node = node[part]; }
+    });
+  });
+  return root;
+}
+
+function hashStr(str) {
+  // Hash simple mais unique basé sur le chemin complet
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = Math.imul(31, h) + str.charCodeAt(i) | 0;
+  }
+  return Math.abs(h).toString(36);
+}
+
+function renderTree() {
+  document.getElementById('file-tree').innerHTML = renderNode(buildTree(Object.keys(vault)), '');
+  updateVaultCounter();
+}
+
+function updateVaultCounter() {
+  const el = document.getElementById('vault-counter');
+  if (!el) return;
+  const paths = Object.keys(vault);
+  const noteCount = paths.length;
+  const folderSet = new Set();
+  paths.forEach(p => {
+    const parts = p.split('/');
+    for (let i = 1; i < parts.length; i++) folderSet.add(parts.slice(0, i).join('/'));
+  });
+  const folderCount = folderSet.size;
+  const loadedCount = paths.filter(p => vault[p] !== null && vault[p] !== undefined).length;
+  el.innerHTML = `📄 ${noteCount} note${noteCount>1?'s':''} · 📁 ${folderCount} dossier${folderCount>1?'s':''}` +
+    (loadedCount < noteCount ? ` · <span style="color:var(--purple2)">${loadedCount} chargée${loadedCount>1?'s':''}</span>` : '');
+}
+
+function renderNode(node, prefix) {
+  let html = '';
+  const entries = Object.entries(node).sort(([a,av],[b,bv]) => {
+    const af = typeof av === 'string'; const bf = typeof bv === 'string';
+    if (af !== bf) return af ? 1 : -1;
+    return a.localeCompare(b, 'fr');
+  });
+  entries.forEach(([name, value]) => {
+    const fullPath = prefix ? prefix + '/' + name : name;
+    // Cacher les fichiers .keep (marqueurs de dossiers vides)
+    if (name === '.keep') return;
+    if (typeof value === 'string' && value.startsWith('__FILE__')) {
+      const path = value.replace('__FILE__','');
+      const label = name.replace(/\.md$/i,'');
+      html += `<div class="tree-row${activeTab===path?' active':''}" draggable="true"
+        onclick="openNote('${esc(path)}')"
+        ondragstart="dragStart(event,'${esc(path)}','file')"
+        ondragover="event.preventDefault();this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')"
+        ondrop="dropOn(event,'${esc(prefix)}')">
+        <span class="arrow" style="visibility:hidden"></span>
+        <span class="icon">📄</span>
+        <span class="label" title="${esc(path)}">${label}</span>
+        <span class="row-actions">
+          <button class="row-btn" title="Déplacer" onclick="event.stopPropagation();showMoveModal('${esc(path)}','file')">✂️</button>
+          <button class="row-btn del" title="Supprimer" onclick="event.stopPropagation();showDeleteModal('${esc(path)}','file')">🗑️</button>
+        </span>
+      </div>`;
+    } else {
+      const fid = 'f' + hashStr(fullPath);
+      const isOpen = openFolders.has(fid);
+      html += `<div class="tree-row${isOpen?' open':''}" draggable="true" data-fid="${fid}"
+        onclick="toggleFolder('${fid}',event)"
+        ondragstart="dragStart(event,'${esc(fullPath)}','folder')"
+        ondragover="event.preventDefault();this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')"
+        ondrop="dropOn(event,'${esc(fullPath)}')">
+        <span class="arrow">▶</span>
+        <span class="icon">📁</span>
+        <span class="label">${name}</span>
+        <span class="row-actions">
+          <button class="row-btn" title="Nouvelle note ici" onclick="event.stopPropagation();showNewNoteModal('${esc(fullPath)}')">✏️</button>
+          <button class="row-btn" title="Nouveau sous-dossier" onclick="event.stopPropagation();showNewFolderModal('${esc(fullPath)}')">📁</button>
+          <button class="row-btn" title="Déplacer" onclick="event.stopPropagation();showMoveModal('${esc(fullPath)}','folder')">✂️</button>
+          <button class="row-btn del" title="Supprimer" onclick="event.stopPropagation();showDeleteModal('${esc(fullPath)}','folder')">🗑️</button>
+        </span>
+      </div>
+      <div class="tree-children${isOpen?' open':''}" id="${fid}">${renderNode(value, fullPath)}</div>`;
+    }
+  });
+  return html;
+}
+
+function esc(s) { return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+
+function toggleFolder(folderId, e) {
+  if (openFolders.has(folderId)) openFolders.delete(folderId);
+  else openFolders.add(folderId);
+  renderTree();
+}
+
+/* ── DRAG & DROP dans l'arbre ── */
+function dragStart(e, path, type) {
+  dragSrc = { path, type };
+  e.dataTransfer.effectAllowed = 'move';
+}
+
+function dropOn(e, targetFolder) {
+  e.preventDefault(); e.stopPropagation();
+  document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+  if (!dragSrc) return;
+  const src = dragSrc; dragSrc = null;
+  if (src.type === 'file') {
+    moveFile(src.path, targetFolder);
+  } else {
+    moveFolder(src.path, targetFolder);
+  }
+}
+
+/* ── TABS ── */
+async function openNote(path) {
+  if (!openTabs.find(t => t.path === path)) {
+    openTabs.push({ path, title: path.split('/').pop().replace(/\.md$/i,'') });
+  }
+  activeTab = path;
+  // Auto-ouvrir les dossiers parents
+  const parts = path.split('/');
+  for (let i = 1; i < parts.length; i++) {
+    const folderPath = parts.slice(0, i).join('/');
+    const fid = 'f' + hashStr(folderPath);
+    openFolders.add(fid);
+  }
+  renderTabs(); renderTree();
+
+  // Si le contenu n'est pas encore chargé (mode lazy GitHub), le télécharger maintenant
+  if (vault[path] === null || vault[path] === undefined) {
+    document.getElementById('note-view').innerHTML = `
+      <div class="empty-state">
+        <span class="big-icon">⏳</span>
+        <p>Chargement de la note…</p>
+      </div>`;
+    try {
+      await ghLoadNote(path);
+    } catch(e) {
+      document.getElementById('note-view').innerHTML = `
+        <div class="empty-state">
+          <span class="big-icon">❌</span>
+          <p>Erreur de chargement</p>
+          <p style="font-size:.8rem">${e.message}</p>
+          <button class="btn-folder" style="width:auto;margin-top:10px" onclick="openNote('${path.replace(/'/g,"\\'")}')">Réessayer</button>
+        </div>`;
+      return;
+    }
+  }
+  renderNote(path);
+}
+
+function closeTab(path, e) {
+  e.stopPropagation();
+  openTabs = openTabs.filter(t => t.path !== path);
+  if (activeTab === path) activeTab = openTabs.length ? openTabs[openTabs.length-1].path : null;
+  renderTabs();
+  if (activeTab) renderNote(activeTab);
+  else document.getElementById('note-view').innerHTML = `<div class="empty-state"><span class="big-icon">🔮</span><p>Sélectionnez une note</p></div>`;
+  renderTree();
+}
+
+function renderTabs() {
+  document.getElementById('tabs').innerHTML = openTabs.map(t =>
+    `<div class="tab${t.path===activeTab?' active':''}" onclick="openNote('${esc(t.path)}')">
+      📄 ${t.title}
+      <span class="tab-close" onclick="closeTab('${esc(t.path)}',event)">✕</span>
+    </div>`).join('');
+}
+
+/* ── NOTE RENDER ── */
+function renderNote(path) {
+  const raw = vault[path] || '';
+  const title = path.split('/').pop().replace(/\.md$/i,'');
+  const tags = [...raw.matchAll(/#([\w-]+)/g)].map(m=>m[1]).filter(t=>t.length>1);
+  const tagsHtml = tags.length ? `<div style="margin-bottom:18px">${tags.map(t=>`<span class="tag-badge">#${t}</span>`).join('')}</div>` : '';
+  const cleaned = raw.replace(/^(#[\w-]+ *)+$/gm,'').trim();
+  const withLinks = cleaned.replace(/\[\[([^\]]+)\]\]/g, (_,inner) => {
+    const [target, alias] = inner.split('|');
+    return `<a href="#" onclick="openWikilink('${esc(target)}');return false">${alias||target}</a>`;
+  });
+  document.getElementById('note-view').innerHTML =
+    `<div class="note-title">${title}</div>
+     <div class="note-meta">📂 ${path}</div>
+     ${tagsHtml}
+     <div class="md-body">${marked.parse(withLinks)}</div>`;
+}
+
+async function openWikilink(target) {
+  const match = Object.keys(vault).find(p => p.toLowerCase().includes(target.toLowerCase()));
+  if (match) await openNote(match);
+  else alert(`Note "${target}" introuvable.`);
+}
+
+/* ── SEARCH ── */
+function onSearch(q) {
+  const box = document.getElementById('search-results');
+  if (!q.trim()) { box.classList.remove('open'); return; }
+  const ql = q.toLowerCase();
+  // Note : en mode lazy, seul le contenu déjà chargé (vault[p] non-null) est cherché.
+  // La recherche par nom de fichier fonctionne toujours sur toutes les notes.
+  const results = Object.entries(vault)
+    .filter(([p,c]) => p.toLowerCase().includes(ql) || (c && c.toLowerCase().includes(ql)))
+    .slice(0,12)
+    .map(([path, content]) => {
+      const notLoaded = content === null || content === undefined;
+      const idx = !notLoaded ? content.toLowerCase().indexOf(ql) : -1;
+      const snippet = idx>=0 ? content.slice(Math.max(0,idx-40),idx+80) : '';
+      const hi = snippet.replace(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'), m=>`<mark>${m}</mark>`);
+      return `<div class="search-result-item" onclick="openNote('${esc(path)}');closeSearch()">
+        <div class="sr-title">${path.split('/').pop().replace('.md','')} ${notLoaded?'<span style="color:var(--text3);font-size:.7rem">(non chargée)</span>':''}</div>
+        <div class="sr-path">${path}</div>
+        ${hi?`<div style="color:var(--text2);font-size:.75rem;margin-top:3px">${hi}</div>`:''}
+      </div>`;
+    });
+  const hint = `<div style="padding:6px 14px;font-size:.7rem;color:var(--text3);border-bottom:1px solid var(--border)">🔍 Recherche dans les titres + notes déjà ouvertes</div>`;
+  box.innerHTML = hint + (results.length ? results.join('') : `<div class="search-result-item"><span style="color:var(--text3)">Aucun résultat</span></div>`);
+  box.classList.add('open');
+}
+function closeSearch() { document.getElementById('search-results').classList.remove('open'); document.getElementById('search-input').value=''; }
+
+/* ── NEW NOTE ── */
+function showNewNoteModal(defaultFolder) {
+  const folders = ['(racine)', ...getFolders()];
+  const opts = folders.map(f => `<option value="${esc(f)}"${defaultFolder===f?' selected':''}>${f}</option>`).join('');
+  showModal(`<h3>✏️ Nouvelle note</h3>
+    <input type="text" id="new-note-name" placeholder="Nom de la note…" autofocus>
+    <select id="new-note-folder">${opts}</select>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn-confirm" onclick="doCreateNote()">Créer</button>
+    </div>`);
+  setTimeout(() => document.getElementById('new-note-name').focus(), 50);
+  document.getElementById('new-note-name').addEventListener('keydown', e => { if (e.key==='Enter') doCreateNote(); });
+}
+
+function doCreateNote() {
+  let name = (document.getElementById('new-note-name').value || '').trim();
+  if (!name) { document.getElementById('new-note-name').style.borderColor='var(--red)'; return; }
+  if (!name.endsWith('.md')) name += '.md';
+  let folder = document.getElementById('new-note-folder').value;
+  if (folder === '(racine)') folder = '';
+  const path = folder ? folder + '/' + name : name;
+  if (vault[path]) {
+    document.getElementById('new-note-name').style.borderColor='var(--red)';
+    document.getElementById('new-note-name').title = 'Ce fichier existe déjà';
+    return;
+  }
+  vault[path] = '# ' + name.replace(/\.md$/i, '') + '\n\n';
+  vaultMeta[path] = { localMtime: Date.now() };
+  closeModal();
+  renderTree();
+  openNote(path);
+  ghSave(path, vault[path]);
+}
+
+/* ── NEW FOLDER ── */
+function showNewFolderModal(defaultParent) {
+  const folders = ['(racine)', ...getFolders()];
+  const opts = folders.map(f => `<option value="${esc(f)}"${defaultParent===f?' selected':''}>${f}</option>`).join('');
+  showModal(`<h3>📁 Nouveau dossier</h3>
+    <input type="text" id="new-folder-name" placeholder="Nom du dossier…" autofocus>
+    <label style="color:var(--text2);font-size:.82rem;margin-bottom:4px;display:block">Créer dans :</label>
+    <select id="new-folder-parent">${opts}</select>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn-confirm" onclick="doCreateFolder()">Créer</button>
+    </div>`);
+  setTimeout(() => document.getElementById('new-folder-name').focus(), 50);
+  document.getElementById('new-folder-name').addEventListener('keydown', e => { if (e.key==='Enter') doCreateFolder(); });
+}
+
+function doCreateFolder() {
+  let name = (document.getElementById('new-folder-name').value || '').trim();
+  if (!name) { document.getElementById('new-folder-name').style.borderColor='var(--red)'; return; }
+  // Nettoyer le nom (pas de / ni caractères interdits)
+  name = name.replace(/[/\\:*?"<>|]/g, '-');
+  let parent = document.getElementById('new-folder-parent').value;
+  if (parent === '(racine)') parent = '';
+  const folderPath = parent ? parent + '/' + name : name;
+  // Vérifier que ce dossier n'existe pas déjà
+  const exists = Object.keys(vault).some(p => p === folderPath || p.startsWith(folderPath + '/'));
+  if (exists) {
+    document.getElementById('new-folder-name').style.borderColor='var(--red)';
+    document.getElementById('new-folder-name').placeholder = 'Ce dossier existe déjà';
+    return;
+  }
+  // Créer un fichier .keep invisible pour matérialiser le dossier
+  vault[folderPath + '/.keep'] = '';
+  closeModal();
+  renderTree();
+}
+
+/* ── DELETE ── */
+function showDeleteModal(path, type) {
+  const label = type==='folder' ? `le dossier <strong>${path}</strong> et toutes ses notes` : `la note <strong>${path}</strong>`;
+  showModal(`<h3>🗑️ Supprimer</h3>
+    <p style="color:var(--text2);font-size:.9rem;margin-bottom:20px">Voulez-vous supprimer ${label} ?<br><span style="color:var(--red);font-size:.8rem">Cette action est irréversible.</span></p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn-danger" onclick="doDelete('${esc(path)}','${type}')">Supprimer</button>
+    </div>`);
+}
+
+function doDelete(path, type) {
+  if (type === 'file') {
+    ghDelete(path);
+    delete vault[path];
+    openTabs = openTabs.filter(t => t.path !== path);
+    if (activeTab === path) { activeTab = openTabs.length ? openTabs[openTabs.length-1].path : null; }
+  } else {
+    Object.keys(vault).filter(p => p === path || p.startsWith(path + '/')).forEach(p => {
+      ghDelete(p);
+      delete vault[p];
+      openTabs = openTabs.filter(t => t.path !== p);
+    });
+    if (!openTabs.find(t => t.path === activeTab)) activeTab = openTabs.length ? openTabs[openTabs.length-1].path : null;
+  }
+  closeModal(); renderTree(); renderTabs();
+  if (activeTab) renderNote(activeTab);
+  else document.getElementById('note-view').innerHTML = `<div class="empty-state"><span class="big-icon">🔮</span><p>Sélectionnez une note</p></div>`;
+}
+
+/* ── MOVE ── */
+function showMoveModal(path, type) {
+  const folders = getFolders();
+  const opts = ['(racine)', ...folders].map(f => `<option value="${esc(f)}">${f}</option>`).join('');
+  showModal(`<h3>✂️ Déplacer</h3>
+    <p style="color:var(--text2);font-size:.85rem;margin-bottom:12px">Déplacer <strong>${path.split('/').pop()}</strong> vers :</p>
+    <select id="move-dest">${opts}</select>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn-confirm" onclick="doMove('${esc(path)}','${type}')">Déplacer</button>
+    </div>`);
+}
+
+function doMove(srcPath, type) {
+  let dest = document.getElementById('move-dest').value;
+  if (dest === '(racine)') dest = '';
+  if (type === 'file') {
+    moveFile(srcPath, dest);
+  } else {
+    moveFolder(srcPath, dest);
+  }
+  closeModal();
+}
+
+function moveFile(srcPath, destFolder) {
+  const name = srcPath.split('/').pop();
+  const newPath = destFolder ? destFolder + '/' + name : name;
+  if (newPath === srcPath) return;
+  vault[newPath] = vault[srcPath];
+  delete vault[srcPath];
+  openTabs = openTabs.map(t => t.path === srcPath ? { ...t, path: newPath } : t);
+  if (activeTab === srcPath) activeTab = newPath;
+  renderTree(); renderTabs();
+  if (activeTab) renderNote(activeTab);
+}
+
+function moveFolder(srcFolder, destFolder) {
+  const folderName = srcFolder.split('/').pop();
+  const newBase = destFolder ? destFolder + '/' + folderName : folderName;
+  if (newBase === srcFolder || newBase.startsWith(srcFolder + '/')) return;
+  const toMove = Object.keys(vault).filter(p => p === srcFolder || p.startsWith(srcFolder + '/'));
+  toMove.forEach(p => {
+    const rel = p.slice(srcFolder.length);
+    const newPath = newBase + rel;
+    vault[newPath] = vault[p];
+    delete vault[p];
+    openTabs = openTabs.map(t => t.path === p ? { ...t, path: newPath } : t);
+    if (activeTab === p) activeTab = newPath;
+  });
+  renderTree(); renderTabs();
+  if (activeTab) renderNote(activeTab);
+}
+
+function getFolders() {
+  const set = new Set();
+  Object.keys(vault).forEach(p => {
+    const parts = p.split('/');
+    for (let i = 1; i < parts.length; i++) set.add(parts.slice(0, i).join('/'));
+  });
+  return [...set].sort();
+}
+
+/* ── MODAL ── */
+function showModal(html) { document.getElementById('modal-content').innerHTML = html; document.getElementById('modal').style.display = 'flex'; }
+function closeModal() { document.getElementById('modal').style.display = 'none'; }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ══════════════════════════════════════════════════════════
+   GITHUB SYNC
+   ══════════════════════════════════════════════════════════ */
+
+async function ghFetch(url, options = {}, retries = 3) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000); // 15s timeout
+      const res = await fetch(url, { ...options, signal: controller.signal });
+      clearTimeout(timeout);
+      if (res.status === 403 || res.status === 429) {
+        // Rate limit GitHub — attendre plus longtemps
+        await new Promise(r => setTimeout(r, 2000 * attempt));
+        continue;
+      }
+      return res;
+    } catch(e) {
+      if (attempt === retries) throw e;
+      // Connexion lente/ADSL : attendre avant de réessayer (backoff progressif)
+      setStatus(`⏳ Connexion lente, nouvelle tentative ${attempt}/${retries}…`);
+      await new Promise(r => setTimeout(r, 1500 * attempt));
+    }
+  }
+  throw new Error('Échec après plusieurs tentatives');
+}
+
+function ghHeaders() {
+  return {
+    'Authorization': 'token ' + GH.token,
+    'Accept': 'application/vnd.github.v3+json',
+    'Content-Type': 'application/json',
+  };
+}
+
+function ghUrl(path) {
+  return `https://api.github.com/repos/${GH.repo}/contents/${path}?ref=${GH.branch}`;
+}
+
+/* ── Config modal ── */
+function showGHModal() {
+  showModal(`<h3>⚙️ Configuration GitHub</h3>
+    <label style="color:var(--text2);font-size:.82rem;display:block;margin-bottom:4px">Token GitHub</label>
+    <input type="password" id="gh-token-input" placeholder="ghp_..." value="${GH.token}">
+    <label style="color:var(--text2);font-size:.82rem;display:block;margin-bottom:4px">Repo (utilisateur/repo)</label>
+    <input type="text" id="gh-repo-input" value="${GH.repo}" placeholder="CHM-Cloud/Obsidian-CM">
+    <label style="color:var(--text2);font-size:.82rem;display:block;margin-bottom:4px">Branche</label>
+    <input type="text" id="gh-branch-input" value="${GH.branch}" placeholder="main">
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn-confirm" onclick="saveAndTestGH()">Enregistrer & Tester</button>
+    </div>`);
+}
+
+async function saveAndTestGH() {
+  GH.token  = document.getElementById('gh-token-input').value.trim();
+  GH.repo   = document.getElementById('gh-repo-input').value.trim();
+  GH.branch = document.getElementById('gh-branch-input').value.trim();
+  saveGHConfig();
+  closeModal();
+  await ghSync();
+}
+
+/* ── Sync : charge tout depuis GitHub ── */
+async function ghSync() {
+  if (!GH.token) { showGHModal(); return; }
+  setGHStatus('🔄', 'Chargement de l\'arborescence…', 'var(--yellow)');
+  try {
+    // Un seul appel API pour récupérer TOUTE l'arborescence (rapide, pas de contenu)
+    const url = `https://api.github.com/repos/${GH.repo}/git/trees/${GH.branch}?recursive=1`;
+    const res = await ghFetch(url, { headers: ghHeaders() });
+    if (!res.ok) throw new Error(`GitHub API ${res.status}: ${await res.text()}`);
+    const data = await res.json();
+    if (data.truncated) {
+      console.warn('Arborescence tronquée (repo très volumineux), certains fichiers peuvent manquer.');
+    }
+    const files = data.tree.filter(item =>
+      item.type === 'blob' &&
+      (item.path.endsWith('.md') || item.path.endsWith('.txt')) &&
+      !item.path.split('/').some(p => p.startsWith('.'))
+    );
+    // Vider le coffre et créer les entrées en mode "non chargé" (null = pas encore téléchargé)
+    vault = {};
+    files.forEach(f => { vault[f.path] = null; });
+    renderTree();
+    setGHStatus('✅', `${files.length} notes — ${GH.repo}`, 'var(--green)');
+    setStatus(`✅ ${files.length} notes listées (cliquez pour charger le contenu)`);
+    setTimeout(() => setStatus(''), 4000);
+  } catch(e) {
+    setGHStatus('❌', 'Erreur : ' + e.message, 'var(--red)');
+    setStatus('❌ Erreur GitHub : ' + e.message);
+  }
+}
+
+/* ── Télécharger le contenu de TOUTES les notes (forcer le chargement complet) ── */
+async function ghDownloadAll() {
+  if (!GH.token) { showGHModal(); return; }
+  const paths = Object.keys(vault);
+  if (!paths.length) { setStatus("⚠️ Aucune note à télécharger. Lancez d'abord une synchronisation."); return; }
+
+  const total = paths.length;
+  setGHStatus('🔄', `Téléchargement 0/${total}…`, 'var(--yellow)');
+  setStatus(`⏳ Téléchargement de ${total} notes depuis GitHub…`);
+  showProgress(0);
+
+  let done = 0, errors = 0;
+  const BATCH = 5; // adapté aux connexions lentes (ADSL)
+  for (let i = 0; i < paths.length; i += BATCH) {
+    const batch = paths.slice(i, i + BATCH);
+    await Promise.all(batch.map(async (path) => {
+      try {
+        await ghLoadNote(path); // remplit vault[path] avec le contenu réel
+      } catch(e) {
+        errors++;
+        console.warn('Erreur téléchargement', path, e);
+      }
+      done++;
+      showProgress(Math.round(done / total * 100));
+      setStatus(`⏳ ${done}/${total} notes téléchargées…${errors ? ' ⚠️ '+errors+' erreurs' : ''}`);
+      setGHStatus('🔄', `Téléchargement ${done}/${total}`, 'var(--yellow)');
+    }));
+    await new Promise(r => setTimeout(r, 300)); // pause entre lots pour rate limit + ADSL
+  }
+
+  hideProgress();
+  renderTree();
+  if (activeTab && vault[activeTab] !== null) renderNote(activeTab); // rafraîchir la note ouverte si besoin
+  setGHStatus('✅', `${total} notes — ${GH.repo}`, 'var(--green)');
+  setStatus(`✅ ${total - errors} note${total-errors>1?'s':''} téléchargée${total-errors>1?'s':''}` +
+    (errors ? ` (${errors} erreur${errors>1?'s':''})` : '') + ` !`);
+  setTimeout(() => setStatus(''), 6000);
+}
+
+/* ── Charger le contenu d'UNE SEULE note (à la demande) ── */
+async function ghLoadNote(path) {
+  try {
+    const res = await ghFetch(ghUrl(path), { headers: ghHeaders() });
+    if (!res.ok) throw new Error(`GitHub API ${res.status}`);
+    const data = await res.json();
+    vault[path] = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
+    return vault[path];
+  } catch(e) {
+    console.error('Erreur chargement note:', path, e);
+    throw e;
+  }
+}
+
+/* ── Sauvegarder une note sur GitHub ── */
+async function ghSave(path, content) {
+  if (!GH.token) return;
+  try {
+    // Récupérer le SHA actuel (requis pour update)
+    let sha = null;
+    const getRes = await ghFetch(ghUrl(path), { headers: ghHeaders() });
+    if (getRes.ok) {
+      const data = await getRes.json();
+      sha = data.sha;
+    }
+    const body = {
+      message: `Update ${path}`,
+      content: btoa(unescape(encodeURIComponent(content))),
+      branch: GH.branch,
+    };
+    if (sha) body.sha = sha;
+    const putRes = await ghFetch(
+      `https://api.github.com/repos/${GH.repo}/contents/${path}`,
+      { method: 'PUT', headers: ghHeaders(), body: JSON.stringify(body) }
+    );
+    if (!putRes.ok) throw new Error(await putRes.text());
+    setGHStatus('✅', 'Sauvegardé', 'var(--green)');
+    setTimeout(() => setGHStatus('✅', GH.repo, 'var(--green)'), 2000);
+  } catch(e) {
+    setGHStatus('❌', 'Erreur sauvegarde', 'var(--red)');
+    console.error('ghSave error:', e);
+  }
+}
+
+/* ── Supprimer un fichier sur GitHub ── */
+async function ghDelete(path) {
+  if (!GH.token) return;
+  try {
+    const getRes = await ghFetch(ghUrl(path), { headers: ghHeaders() });
+    if (!getRes.ok) return;
+    const data = await getRes.json();
+    await ghFetch(
+      `https://api.github.com/repos/${GH.repo}/contents/${path}`,
+      { method: 'DELETE', headers: ghHeaders(),
+        body: JSON.stringify({ message: `Delete ${path}`, sha: data.sha, branch: GH.branch }) }
+    );
+  } catch(e) { console.error('ghDelete error:', e); }
+}
+
+function setGHStatus(icon, label, color) {
+  const ind = document.getElementById('gh-indicator');
+  const lbl = document.getElementById('gh-label');
+  if (ind) ind.textContent = icon;
+  if (lbl) { lbl.textContent = label; lbl.style.color = color || 'var(--text3)'; }
+}
+
+/* ── Auto-save quand on ouvre une note (éditeur inline futur) ── */
+// Pour l'instant, hook sur doDelete et doCreateNote pour sync GitHub
+
+</script>
+</body>
+</html>
