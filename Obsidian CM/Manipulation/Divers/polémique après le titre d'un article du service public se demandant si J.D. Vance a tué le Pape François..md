@@ -1,0 +1,10 @@
+---
+MOC:
+  - MANIPULATION
+  - MAIN STREAM
+  - DELIRE
+---
+
+MOC: [[MANIPULATION]] 
+
+![[Pasted image 20250423173228.png]]
