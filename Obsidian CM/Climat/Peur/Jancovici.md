@@ -1,0 +1,95 @@
+---
+MOC:
+  - CLIMAT
+  - CO2
+  - YOUNG LEADER
+  - AGENDA 2030
+  - MALTUSIANISME
+---
+
+MOC: [[CLIMAT]] | [[CO2 et finance]] | [[YOUNG LEADER]] | [[AGENDA 2030]] | [[MALTUSIANISME]] 
+https://davocratie.com/2023/05/09/passcarbone-troisieme-partie-la-caution-jancovici/
+
+
+
+Jancovici dispose d’une influence et d’une résonance centrales dans la psy op du pass carbone au nom de la science. Pourtant, il l’admet lui-même :
+
+> Je n’ai pas publié d’article dans des revues scientifiques. Je ne suis pas un scientifique.
+> 
+> JEAN-MARC JANCOVICI – [REPORTERRE](https://reporterre.net/Jean-Marc-Jancovici-Je-ne-suis-pas-un-scientifique#nb9)
+
+La soirée consacrée au pass carbone sur BFM TV, le 14/11/2022, a posé publiquement des jalons qui depuis ne cessent de croître. Les articles de presse se multiplient, entre fausses interrogations et sondages pour prendre la température. Or l’une des expertes qui a co-élaboré le docu-fiction 2050, _Ouvrons les yeux_ diffusé par BFM TV est Emma Stoking, [présentée par la chaîne de télé](https://www.bfmtv.com/environnement/climat/2050-ouvrons-les-yeux-comment-le-docu-fiction-de-bfmtv-sur-le-climat-ete-realise_GN-202211140030.html) comme la « porte-parole du plan de transformation de l’économie française pour The Shift Project », le think tank dirigé par Jancovici.
+
+Figure médiatique à la popularité croissante, Jean-Marc Jancovici est présenté par _L’Express_ (où il fut chroniqueur) comme une « _idole des jeunes_ » et bénéficie de l’écoute tant de la présidence française que des grandes entreprises. Il s’est par ailleurs illustré par sa défense du nucléaire et une critique pertinente des énergies dites « renouvelables ». Toutefois – ce qui explique entre autres sa défense du nucléaire –, le combat central de Jancovici est la réduction des émissions de CO2. **Son discours sur ce sujet, anxiogène, s’axe autour de la décarbonation. Jancovici est après tout le fondateur (pour l’ADEME) du concept de bilan carbone. D’ailleurs, son cabinet [Carbone 4](https://www.carbone4.com/) – car il préconise de diviser les émissions de CO2 par 4 – « _accompagne la transformation des organisations vers la décarbonation et l’adaptation au changement climatique_ ».** Il est par conséquent assez logique de retrouver Jancovici parmi les [membres du Haut Conseil pour le Climat](https://www.hautconseilclimat.fr/a-propos/#membres), qu’une ONG comme le WWF souhaite doter de pouvoirs décisionnels renforcés (tout un symbole…). Dit autrement, Jancovici est en parfaite syntonie avec l’[Agenda 2030](https://davocratie.com/tag/agenda-2030/) de l’ONU, donc le Great Reset du Davos de Klaus Schwab et par extension, le Pacte vert pour l’Europe de la Commission von der Leyen.
+
+##### Un néo-malthusien décomplexé
+
+Loin d’être involontaire, cette congruence reflète la filiation intellectuelle de Jean-Marc Jancovici avec le rapport _Limits to Growth_ – dit rapport Meadows – commandé au MIT par les néo-malthusiens du [Club de Rome](https://davocratie.com/?s=%22Club+de+Rome%22), et présenté au [Sommet de Stockholm](https://davocratie.com/?s=Stockholm) (1972) placé sous l’égide de Maurice Strong. Jancovici en publia [une chronique détaillée](https://jancovici.com/recension-de-lectures/societes/rapport-du-club-de-rome-the-limits-of-growth-1972/) sur son site en février 2003. Son premier retour en partage la conclusion : une croissance matérielle constante ne pourra que mener à l’effondrement, en particulier au regard de la part alimentaire et du produit industriel par tête. Après tout, nous vivons en effet dans un monde fini et l’appel à la frugalité peut paraître de bon sens. Pour autant, le rapport Meadows se distingue de l’approche de Malthus.
+
+Comme l’ont en effet rappelé Robert Golub et Joe Townsend dans leur article de 1977, **Malthus défendait une théorie de l’équilibre dynamique entre la démographie et les moyens de subsistance** :
+
+> Dans l’éventualité où l’on observerait une croissance exponentielle de la population, quelle qu’en soit l’époque ou le lieu, Malthus soutient que cela constituerait la preuve d’une croissance exponentielle (ou plus rapide) de la capacité de production. Inversement, si le niveau de vie d’une population devait s’accroître, Malthus ne pourrait l’expliquer qu’en disant que la population a choisi de basculer des contraintes sur la croissance démographique fondées sur la difficulté et la misère à des contraintes appuyées sur la restriction volontaire.
+> 
+> ROBERT GOLUB ET JOE TOWNSEND – [MALTHUS, MULTINATIONALS AND THE CLUB OF ROME](https://www.jstor.org/stable/284875?read-now=1&seq=14)
+
+De son côté, **le Club de Rome a adopté une position catastrophiste à base de crise par la déplétion des ressources à cause de la croissance démographique**. Loin d’être anecdotique, cette pensée du Club se retrouve ancrée chez Jean-Marc Jancovici, lui-même partisan d’une solution démographique. [En mai 2022](https://www.francetvinfo.fr/monde/environnement/crise-climatique/climat-soit-on-essaie-de-reguler-la-natalite-nous-meme-soit-les-pandemies-les-famines-et-les-conflits-s-en-chargeront-previent-jean-marc-jancovici_5154121.html), il déclarait ainsi au micro de _France Info_ :
+
+> Ou bien on régule nous-mêmes, ou bien ça se fera par des pandémies, des famines ou des conflits.
+> 
+> JEAN-MARC JANCOVICI – [FRANCE INFO](https://www.francetvinfo.fr/monde/environnement/crise-climatique/climat-soit-on-essaie-de-reguler-la-natalite-nous-meme-soit-les-pandemies-les-famines-et-les-conflits-s-en-chargeront-previent-jean-marc-jancovici_5154121.html)
+
+La raison pour cette régulation : réduction des émissions de gaz à effet de serre et de l’impact du dérèglement climatique sur nos sociétés. En d’autres termes, Jancovici se glisse ici encore à la perfection dans les chaussons du [Grand Narratif](https://davocratie.com/tag/great-narrative/) de Davos.
+
+En juillet 2019, il allait encore plus loin ([ce qui est faux](https://www.tf1info.fr/societe/sante-greffe-existe-t-il-un-age-limite-pour-recevoir-un-don-d-organe-2126423.html)) :
+
+> Plutôt que d’imaginer le niveau de vie à l’arrivée, je préfère imaginer la dynamique. Le premier point est de limiter dès que nous pouvons la croissance démographique. Dans l’aide au développement, tout ce qui permet aux pays de maîtriser leur démographie est une bonne idée, car cela amortit les efforts à fournir sur tous les autres plans. Trois leviers : l’éducation des femmes, l’accès aux moyens de contraception, et les systèmes de retraite. Dans les pays occidentaux, il y a un premier moyen de réguler la population de façon raisonnablement indolore : ne pas mettre tout en œuvre pour faire survivre les personnes âgées malades, à l’image du système anglais qui ne pratique, par exemple, plus de greffe d’organes pour des personnes de plus de 65 ou 70 ans.
+> 
+> JEAN-MARC JANCOVICI – SOCIALTER  (JUILLET 2019)
+
+**En somme, l’approche de Jancovici se confond avec celle de [Population Matters](https://davocratie.com/tag/population-matters/), du Good Club de Bill Gates, Warren Buffett, Ted Turner et [George Soros](https://davocratie.com/category/soros-connection/)**, avec des néo-malthusiens comme [Jane Goodall](https://davocratie.com/2022/06/08/lheritage-goodall-ou-les-esperances-malthusiennes/) [1](https://davocratie.com/2023/05/09/passcarbone-troisieme-partie-la-caution-jancovici/#note1) ou James Lovelock [2](https://davocratie.com/2023/05/09/passcarbone-troisieme-partie-la-caution-jancovici/#note2), ou encore l’incontournable Maurice Strong [3](https://davocratie.com/2023/05/09/passcarbone-troisieme-partie-la-caution-jancovici/#note3), mentor de Klaus Schwab. **Jancovici partage d’ailleurs le souhait du fondateur de Davos quant à l’avènement du crédit social chinois.**
+
+> On ne répondra pas au changement climatique sans l’usage de la contrainte, un système de type chinois est-il un bon compromis ? Il n’est pas exclu que la réponse soit oui.
+> 
+> JEAN-MARC JANCOVICI – L’EXPRESS (MAI 2019)
+
+##### Réseaux discrets
+
+**Jancovici est un Young Leader (promotion 2002), non de Davos, mais de la malnommée French-American Foundation (FAF).** Co-fondée par les présidents Ford et Giscard, cette structure a pour objectif réel d’étendre et de consolider l’influence américaine. Les Young Leaders sont ainsi les principales courroies de transmission de la géopolitique de Washington. **Selon des informations que nous a aimablement transmis la revue _Faits & Documents_, Jancovici se trouve en outre au Club Le Siècle, un club privé opaque qui regroupe chaque mois plusieurs centaines de membres de l’élite politique, économique, sociétale et médiatique française [4](https://davocratie.com/2023/05/09/passcarbone-troisieme-partie-la-caution-jancovici/#note4).**
+
+Par ailleurs, Jean-Marc Jancovici a planché, selon _Faits & Documents_, sur « Climat – énergie : la fin de l’âge d’or ? » devant la loge Akademos du Grand Orient de France (GODF) le 30 janvier 2012, et sur « Environnement : le désastre est-il certain ? » le 6 août 2020, toujours au GODF. En décembre de la même année, la Respectable Loge Triple Union du Grand Orient de France de Dinan [a par ailleurs publié un texte](https://lbapres.godf.org/app/uploads/2020/12/459-Prospective-pour-le-Climat.pdf) afin de soutenir le think tank de Jancovici, The Shift Project.
+
+![](https://davocratie.com/wp-content/uploads/2023/05/GODF-Shift-Project.png)
+
+##### The Shift Project
+
+Fondé en 2010, The Shift Project (TSP) est naturellement présidé par Jancovici. Financé [par de nombreux acteurs](https://theshiftproject.org/gouvernance/) privés et publics – dont le ministère de la Transition écologique et solidaire et celui des Armées –, et on le trouve également présent [au niveau européen](https://ec.europa.eu/transparencyregister/public/consultation/displaylobbyist.do?id=793026615069-12). La vice-présidente de TSP est Geneviève Férone-Creuzet, vice-présidente de la Fondation Nicolas Hulot (où a travaillé Jancovici) – et ancienne directrice développement durable pour la branche Environnement de Veolia. Le [Comité des Experts](https://theshiftproject.org/gouvernance/) du think tank accueille notamment Alain Grandjean, cofondateur et associé du cabinet Carbone 4 de Jancovici. En juin 2015, Grandjean avait remis avec Pascal Canfin (ancien directeur du [WWF France](https://davocratie.com/?s=wwf)) le rapport « Mobiliser les financements pour le climat – Une feuille de route pour financer une économie décarbonée » au président François Hollande. Sa notice sur The Shift Project précise qu’ « il est nommé en 2018 parmi les 13 membres du Haut Conseil pour l’action climatique, créé auprès du Premier Ministre. **Il est le président de la Fondation Nicolas Hulot depuis 2020 ». Le même Comité des experts comprend Laurent Morel, le troisième associé du cabinet Carbone 4.**
+
+**TSP vise une influence communautaire. Il a entre autres publié [Decarbonize Europe](http://decarbonizeurope.org/en/) (Manifeste pour décarboner l’Europe), signé notamment par Elisabeth Borne**, alors présidente de la RATP, ou encore par Michel Jarraud, ancien secrétaire général (2005-2015) de l’Organisation météorologique mondiale, Jean Jouzel (GIEC), ou encore par Daniel Lebègue, ancien président du chapitre français de la très influente (et très sorosienne) Transparency International – soit [l’une des ONG les plus influentes auprès de la Commission européenne](https://id-foundation.eu/wp-content/uploads/2022/01/ONG_web.pdf).
+
+![](https://davocratie.com/wp-content/uploads/2023/05/Borne-Jancovici-1024x343.png)
+
+Quant au concept de « bilan carbone », développé par Jancovici au cours de sa collaboration avec l’ADEME [5](https://davocratie.com/2023/05/09/passcarbone-troisieme-partie-la-caution-jancovici/#note5), c’est un autre sujet. Notons ici qu’il fut solidement critiqué entre autres [dès 2011](http://www.ecolo.org/documents/documents_in_french/CO2-bilan-carbone-critique-SCM-2011.pdf) par Bernard Beauzamy de la Société de Calcul Mathématique [6](https://davocratie.com/2023/05/09/passcarbone-troisieme-partie-la-caution-jancovici/#note6) :
+
+![](https://davocratie.com/wp-content/uploads/2023/05/Beauzamy-01.png)
+
+[](https://panagram.org/explore?&language=fr&library=davocratie.com&topic=jeanmarcjancovici@connectom.es&layers=61Zg2aM2rXa&binders=davocratie_inedit,davocratie_soros_connection,davocratie_rdp,influence_ong_processus_legislatif_europeen&layout=panoramic&experience=default,dark-green,false)
+
+- [Pass carbone — Première partie : l’Union européenne](https://davocratie.com/2023/05/03/passcarbone-premiere-partie-lunion-europeenne/)
+- [Pass carbone — Deuxième partie : l’ombre de l’Earth Charter](https://davocratie.com/2023/05/03/passcarbone-deuxieme-partie-lombre-de-learth-charter/)
+- [Pass carbone — Quatrième partie : WWF et biodiversité](https://davocratie.com/2023/05/20/passcarbone-quatrieme-partie-wwf-et-biodiversite/)
+- [Pass carbone — Cinquième partie : WWF et transition écologique](https://davocratie.com/2023/05/23/pass-carbone-cinquieme-partie-wwf-et-transition-ecologique/)
+- [Pass carbone — Sixième partie : WWF et Wilderness](https://davocratie.com/2023/05/25/pass-carbone-sixieme-partie-wwf-et-wilderness/)
+- [Pass carbone — Septième partie : Bienvenue à Sustainia](https://davocratie.com/2023/06/02/pass-carbone-septieme-partie-bienvenue-a-sustainia/)
+- [Pass carbone — Huitième partie : Carbon coin](https://davocratie.com/2023/06/22/pass-carbone-huitieme-partie-carbon-coin/)
+
+[1](https://davocratie.com/2023/05/09/passcarbone-troisieme-partie-la-caution-jancovici/#text1) – Primatologue de renommée mondiale et fondatrice du Jane Goodall Institute, elle déclara à la conférence « [Assurer un avenir durable pour l’Amazonie](https://www.youtube.com/watch?v=9XKm0MUIJQs) » du Forum de Davos (2020) : « Nous ne pouvons pas nous cacher de la croissance de la population humaine, car vous savez qu’elle sous-tend un ensemble d’autres problèmes. Ce dont nous avons parlé ne serait pas un problème si la taille de la population mondiale était celle d’il y a cinq cents ans. » (soit [entre 425 et 540 millions de personnes](https://fr.wikipedia.org/wiki/Population_mondiale))
+
+[2](https://davocratie.com/2023/05/09/passcarbone-troisieme-partie-la-caution-jancovici/#text2) – Auteur de l’Hypothèse Gaïa et co-dirigeant de l’ONG Population Matters, et dont les propos font écho à ceux de Jancovici sur la « régulation » : « Je pense que, vivant de la manière dont nous vivons, nous ne sommes pas plus d’un milliard, probablement moins, et que c’est très important. » [Il répondait au journaliste Stephen Sackur](http://news.bbc.co.uk/2/hi/programmes/hardtalk/8206892.stm) qui lui demandait : « Alors quel est selon vous le chiffre viable que la planète Gaïa peut supporter ? »
+
+[3](https://davocratie.com/2023/05/09/passcarbone-troisieme-partie-la-caution-jancovici/#text3) – « À la fin du XXe siècle, l’accroissement exponentiel de la population humaine était perçu comme le plus grand problème de l’humanité, ‘l’Ur-problem’ [le problème initial] au fondement de tous les autres. Pourtant désormais la croissance démographique a cessé ; les niveaux de population chutent précipitamment presque partout, et certaines zones de notre planète ont été presque entièrement dépeuplées. Davantage de personnes meurent, et meurent plus jeunes – les taux de naissance ont chuté drastiquement tandis que la mortalité infantile s’accroît. À la fin de la décennie, les meilleures approximations évaluent la population mondiale totale à 4,5 milliards, un peu moins qu’au début du siècle. Et les experts ont prédit que la réduction de la population humaine pourrait bien continuer au point que ceux qui survivent ne pourraient pas se compter à plus du 1,61 milliard de personnes qui peuplaient la Terre au début du XXe siècle. Une conséquence, oui, de la mort et de la destruction – mais en fin de compte une lueur d’espoir pour l’avenir de notre espèce et son potentiel de régénération. », _Where on Earth are we Going ?_, format Kindle, emp. 395-398. Il s’agit ici d’un chapitre d’anticipation.
+
+[4](https://davocratie.com/2023/05/09/passcarbone-troisieme-partie-la-caution-jancovici/#text4) – Pour un descriptif détaillé de cette organisation, de son histoire, de ses tenants et aboutissants ainsi que de ses membres et participants, nous renvoyons au seul ouvrage qui lui a été consacré, par Emmanuel Ratier : _Au cœur du pouvoir. Enquête sur le club le plus puissant de France_, aux éditions Facta.
+
+[5](https://davocratie.com/2023/05/09/passcarbone-troisieme-partie-la-caution-jancovici/#text5) – _L’Express_ écrit : « 1992, premier Sommet de la terre à Rio, convention sur le climat, la communauté scientifique se met en branle, notre terre brûle. Et Jean-Marc Jancovici, bientôt 30 ans, découvre les rapports du Giec. Il les dévore, subjugué. En 2000, il frappe à la porte de l’Ademe. Il a une idée : le lien entre l’activité économique et le climat, ce sont les émissions de gaz à effet de serre. On devrait les mesurer, compter combien on en émet et, partant, de combien on pourrait les réduire. Trois ans de recherche avec les experts de l’Ademe, et c’est le « bilan carbone », un outil, dont l’agence publique cède les droits d’exploitation à l’Association bilan carbone. A 35 ans, il peut cette fois s’enorgueillir d’une co-trouvaille géniale, destinée à conquérir la France (à l’étranger, on utilise une autre méthode, certifiée elle aussi ISO 1464). Le front haut, il se rapproche alors de son alma mater, où il monte les conférences au sein de l’association X-Environnement. Réseau d’influence, bain de culture d’ingénieurs, de grands projets industrieux, étatiques. »
+
+[6](https://davocratie.com/2023/05/09/passcarbone-troisieme-partie-la-caution-jancovici/#text6) – « Le Bilan Carbone (BC) est parti de l’idée du réchauffement global de la planète ; ce réchauffement serait dû aux Gaz à Effet de Serre (GES), et en particulier au gaz carbonique (CO2), résultant des activités humaines. Le BC est ainsi une tentative pour mettre en évidence la contribution de chaque « entité humaine » (par exemple une ville, une entreprise, ou même une personne physique) à cette émission de gaz. Formellement, le BC se caractérise ainsi par un nombre, exprimé en TECO2 (tonnes équivalent CO2), qui indique les émissions de l’entité pendant un laps de temps donné, généralement une année. Ainsi, lorsque l’entreprise X annonce un bilan d’un million de TECO2 pour l’année, les politiques, les journalistes et l’opinion interprètent ceci immédiatement de la manière suivante : si l’entreprise X n’existait pas, il y aurait un million de tonnes de CO2 en moins dans l’atmosphère, chaque année. Comme un million de tonnes de n’importe quoi est un chiffre colossal, il en résulte immédiatement que l’entreprise X est à l’évidence un dangereux pollueur : il faut d’urgence la fermer, ou au moins la taxer lourdement. A l’évidence, l’entreprise X porte une part de responsabilité quant aux déséquilibres climatiques qui viennent frapper la planète de temps en temps. »
