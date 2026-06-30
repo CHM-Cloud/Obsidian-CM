@@ -1,0 +1,28 @@
+---
+MOC:
+  - POLITIQUE
+  - TOTALITARISME
+Source: https://www.bfmtv.com/tech/actualites/reseaux-sociaux/un-depute-macroniste-veut-encadrer-le-temps-de-parole-des-politiques-sur-les-reseaux-sociaux_AV-202407090224.html?at_brand=BFMTV&at_compte=BFMTV&at_plateforme=twitter
+---
+https://www.bfmtv.com/tech/actualites/reseaux-sociaux/un-depute-macroniste-veut-encadrer-le-temps-de-parole-des-politiques-sur-les-reseaux-sociaux_AV-202407090224.html?at_brand=BFMTV&at_compte=BFMTV&at_plateforme=twitter
+MOC: [[POLITIQUE]] | [[TOTALITARISME]] 
+
+Le député Ensemble de l'Essonne, Paul Midy, souhaite "imposer une équité du temps de parole des politiques sur les réseaux sociaux".
+
+Faut-il encadrer le temps de parole des politiques sur les réseaux sociaux? C'est en tout cas ce que souhaite Paul Midy, le [député Ensemble réélu](https://www.bfmtv.com/politique/elections/legislatives/resultats-elections-legislatives-2024-5-cartes-et-infographies-pour-comprendre-le-second-tour-du-scrutin_GN-202407080039.html "Résultats élections législatives 2024: 5 cartes et infographies pour comprendre le second tour du scrutin") de l'Essonne. Au lendemain des [résultats des élections législatives](https://www.bfmtv.com/politique/elections/legislatives/elections-legislatives-2024-pourquoi-un-tel-ecart-entre-les-sondages-et-les-resultats-du-second-tour_AN-202407080490.html "Élections législatives 2024: pourquoi un tel écart entre les sondages et les résultats du second tour?"), il a exprimé sur le plateau de BFMTV sa volonté de "déposer un projet de loi pour imposer une équité du temps de parole sur les réseaux sociaux".
+
+"On a une bombe démocratique qui a explosé dans notre pays, qui est celle du temps de parole. Dans les médias traditionnels, il y a une équité des temps de parole entre les différentes forces politiques", rappelle l'élu du camp présidentiel, ce lundi 8 juillet. "Elle est respectée à la minute près."
+
+Paul Midy justifie sa proposition par le nombre croissant de Français qui s'[informent sur les plateformes en ligne](https://www.bfmtv.com/tech/les-francais-s-informent-en-moyenne-moins-de-5-minutes-par-jour-sur-internet-selon-une-etude_AD-202103080271.html "Les Français s'informent en moyenne moins de 5 minutes par jour sur internet, selon une étude"). "Aujourd'hui, 50% de l'information des Français se trouve sur les réseaux sociaux. Chez les jeunes, c'est parfois 100%. Et sur les réseaux sociaux, il n'y a aucune équité de temps de parole", martèle-t-il, tout en rappelant [le succès de Jordan Bardella](https://www.bfmtv.com/tech/actualites/reseaux-sociaux/moqueries-faits-divers-et-alcool-bardella-a-t-il-vraiment-profite-d-un-effet-tiktok-aux-europeennes_AV-202406100670.html "Moqueries, faits divers et alcool: Bardella a-t-il vraiment profité d'un "effet Tiktok" aux européennes?") (Rassemblement national) sur Tiktok.
+
+## Des "préconisations de l'Arcom"
+
+En effet, l'Arcom demande à la plupart des chaînes de télévision et des stations radios de respecter un ["principe d'équité" du temps de parole](https://www.bfmtv.com/politique/elections-europeennes-ce-qui-va-changer-avec-le-decompte-du-temps-de-parole_AN-202404150034.html "Élections européennes: ce qui va changer avec le décompte du temps de parole") pour refléter la représentativité entre les différents partis.
+
+Chaque parti doit donc avoir un [temps de parole](https://www.bfmtv.com/politique/elections/legislatives-2024-comment-fonctionne-le-decompte-du-temps-de-parole-des-candidats_VN-202406170076.html "Législatives 2024: comment fonctionne le décompte du temps de parole des candidats") équitable, en fonction de divers critères comme ses résultats aux élections, son nombre d'élus ou encore son positionnement dans les sondages. Des règles spécifiques existent durant les campagnes électorales. Or, seule la télévision et les stations de radio y sont contraintes. Pas la presse écrite ou les réseaux sociaux.
+
+Le gendarme de l'audiovisuel a toutefois publié des "[préconisations relatives à la lutte contre la manipulation de l’information](https://www.arcom.fr/sites/default/files/2024-03/Arcom%20-%20Pr%C3%A9conisations%20plateformes%20%C3%A9lections%20europ%C3%A9ennes%202024.pdf)" pour les réseaux sociaux. X (anciennement Twitter), Youtube ou Google, font l'objet de recommandations de l'Arcom, en application du [Digital Service Act (DSA)](https://www.bfmtv.com/economie/le-digital-services-act-pour-tous_VN-202402190261.html "Le Digital Services Act pour tous"), dit règlement sur les services numériques en français.
+
+Il leur est demandé de "faire preuve d'une transparence renforcée sur les décisions de modération", de contenus, de "mettre en avant les informations issues de sources officielles sur le processus électoral" ou encore d'"identifier clairement les annonces publicitaires à caractère politique".
+
+Toutefois, adapter la règle du temps de parole aux réseaux sociaux semble délicat à mettre en place. "Dans la conception ancienne qui s’appliquait à la télévision et à la radio, on avait une audience théorique mesurable. Dans le système des réseaux sociaux, nous n’avons pas cette capacité à comparer deux comptes, qui n’ont aucun lien entre eux", expliquait ainsi le sociologue Jean-Marie Charon, [interrogé par 20 Minutes](https://www.20minutes.fr/elections/presidentielle/3258475-20220325-presidentielle-2022-heure-reseaux-sociaux-regles-temps-parole-pris-sacre-coup-vieux) lors de l'élections présidentielle de 2022.
