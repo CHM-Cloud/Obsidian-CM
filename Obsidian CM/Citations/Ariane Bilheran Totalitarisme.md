@@ -1,0 +1,10 @@
+---
+MOC:
+  - TOTALITARISME
+  - CITATION
+---
+MOC: [[TOTALITARISME]] | [[CITATION]]
+
+«Dans le totalitarisme, l'ennemi est un élément indispensable de discours de cohésion, car il permet de souder le groupe autour de la survie, en resserrant les liens dans les rangs. L'ennemi est souvent présenté au départ comme extérieur, puis il glisse rapidement en ennemi intérieur, indétectable, partout et nulle part à la fois, de façon à déployer dans la population une vigilance paranoïaque permanente et un sentiment d’impuissance. Ce dernier est très utile, car c'est-à-partir de lui que peut se fabriquer la haine, selon les étapes suivantes: lorsque l'on se sent impuissant, se développent la honte de soi-même, puis une dévalorisation, et enfin, une haine de soi. Le totalitarisme rassemble toutes ces haines de soi et leur propose de se transformer en haine d’autrui: c'est une façon pour les narcissismes blessés de se restaurer, et tout naturellement, le psychisme œuvrant pour sa survie, c'est une solution de moindre effort pour laquelle opte la majorité de la population. Ce sentiment d’un danger invisible, partout, en tout temps et en tout lieu, entretenu par la propagande, débouche fatalement sur la guerre de tous contre tous: il vaut mieux évacuer sa haine sur autrui si l'État l’autorise, que sur soi-même. Le lien social se laisse engloutir dans la méfiance de tous contre tous, la perfidie, le contrôle, l'angoisse, la délation, le complot, et le collage se renforce par la mise à mort active ou passive (laisser mourir) du bouc émissaire, implicitement ou explicitement désigné. La guerre civile n'est jamais loin, puisque l'autre être humain (il peut aussi s'agir d'un peuple ou d'une catégorie de population), quelle que soit sa nature, est perçu comme un étranger, et non plus comme un semblable, tout autant qu'il peut me percevoir aussi comme un étranger avec lequel ne peut plus opérer aucun type d’identification. "Soyez un bon citoyen, dénoncez votre voisin", dit le système totalitaire, traitant les individus comme des enfants qui n’auraient pas grandi…»
+
+Ariane Bilheran, Psychopathologie du totalitarisme, Trédaniel, 2023.
