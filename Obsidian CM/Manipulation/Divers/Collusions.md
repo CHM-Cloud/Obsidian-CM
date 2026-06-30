@@ -1,0 +1,7 @@
+---
+MOC:
+  - MANIPULATION
+---
+MOC: [[MANIPULATION]]
+
+![[Pasted image 20240903113402.png]]
