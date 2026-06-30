@@ -1,0 +1,12 @@
+---
+MOC:
+  - CLIMAT
+  - MANIPULATION
+  - REFROIDISSEMENT
+---
+
+
+MOC: [[REFROIDISSEMENT]] | [[MANIPULATION]] | [[CLIMAT]]
+
+
+![[Pasted image 20240630143128.png]]
