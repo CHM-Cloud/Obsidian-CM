@@ -1,0 +1,22 @@
+---
+MOC:
+  - COVID 19
+  - CANCER
+  - VACCIN
+---
+
+MOC: [[COVID 19 discours maintenant officiel à la Maison Blanche sur l'origine du virus de la Covid]] | [[CANCER]] | [[VACCIN]]
+
+[@CalliFanciulla](https://twitter.com/CalliFanciulla)  
+Les données officielles publiées en Suisse montrent une augmentation de 73% des cancers après le lancement des vaccins anti Covid  
+Les données de la principale compagnie d'assurance maladie suisse Helsana montrent qu'en 2021, le nombre de patients recevant des traitements contre le cancer a augmenté de 73% par rapport à 2020. Cette tendance s'est poursuivie en 2022 . Sans surprise, cela coïncide avec le lancement des vaccins contre la COVID-19 en Suisse, qui a débuté en décembre 2020. "Nous avons doublé les cas de cancer", a conclu Konstantin Beck, professeur d'économie de la santé à l'Université de Lucerne, après avoir analysé les données de l'Office fédéral de la statistique (BfS) et le rapport Helsana 2022. Beck a posé la question « Dans quelle mesure la population suisse était-elle en bonne santé en 2020 ? » dans une présentation vidéo – son analyse basée sur les données du rapport Helsana 2022 et les chiffres de l'enquête officielle sur la santé publiée par le BfS le 3 novembre, rapporte [http://](https://t.co/gFkl63FBmW)infowars.com .  
+Source : [https://](https://t.co/qQyPBWUlWN)transition-news.org/schweiz-wir-haben-eine-verdoppelung-der-krebsfalle…  
+Source : [https://](https://t.co/jckKpQY7zx)infowars.com/posts/vaccine-side-effect-swiss-health-insurers-data-shows-73-increase-in-people-receiving-cancer-treatment-since-2020/…  
+La vidéo de présentation commence par souligner que le BfS réalise l'enquête sur la santé tous les cinq ans. L'économiste de la santé a commenté: "Ce qui est surprenant, c'est que les statistiques publiées par le BfS dans sa base de données contenant des informations détaillées sur l'enquête sur la santé des citoyens suisses aient été supprimées quelques jours après leur publication."  
+Source : [https://](https://t.co/YrrGNe5ZV2)youtu.be/3Z6rviCbCNg?si=45df3BjV1kiXfmpk…  
+Avant la suppression des données, le BfS a déclaré à propos de son enquête sur la santé de 2022: «En 2022, 85% de la population suisse de plus de 15 ans se sentait en bonne santé et 83% se sentait heureuse. Parallèlement, plus d’un tiers vit avec un problème de santé permanent. Le stress psychologique a augmenté par rapport à 2017. La tranche d’âge 15-24 ans est particulièrement touchée, notamment les jeunes femmes.» Cependant, cette évaluation du BfS ne correspond pas aux données publiées par le BfS. Les résultats supprimés de l'enquête sur la santé étaient des réponses à la question « Avez-vous déjà eu l'une des maladies ou problèmes de santé suivants ? », les crises cardiaques, les accidents vasculaires cérébraux et le cancer faisant partie des maladies répertoriées.  
+Les réponses ont montré que :  
+- 170 000 personnes ont déclaré avoir subi une crise cardiaque – contre 33 339 en 2017 (soit une augmentation de plus de 19 %) ;  
+- 124.515 personnes ont déclaré avoir subi un accident vasculaire cérébral – contre 27.584 en 2017 (soit une augmentation de plus de 22 pour cent) ;  
+- 344 166 personnes ont déclaré avoir un cancer, contre 116 603 en 2017 (soit une augmentation de près de 34 %).  
+Beck a calculé que, sur la base des statistiques supprimées du BfS, les cas en 2022 avaient « augmenté d'un facteur de quatre à cinq », même si le vieillissement et l'immigration étaient pris en compte et soustraits des données. Le BfS a également apporté une modification notable à la question dans son enquête sur la santé, ce qui suscite encore plus de soupçons. En 2017, il a été demandé aux participants s'ils avaient subi une crise cardiaque, un accident vasculaire cérébral ou un cancer au cours de l'année précédente, mais l'enquête de 2022 a demandé aux participants s'ils avaient souffert de l'une de ces maladies au cours de leur vie. Beck a également utilisé le rapport de la caisse maladie suisse Helsana pour établir une comparaison appropriée. Publié chaque année en Suisse, le Helsana Drug Report "analyse le marché pharmaceutique suisse et fournit des informations sur le coût et la consommation des médicaments". Les données du rapport 2022 ont été publiées le 30 novembre 2023. À l'aide des données du rapport Helsana, Beck a créé un tableau montrant qu'en 2020, le nombre de patients atteints de cancer recevant un traitement était 9 % plus élevé que la tendance établie à partir des données de 2013 à 2019.
