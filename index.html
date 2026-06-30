@@ -181,6 +181,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);height:
         <button class="row-btn" title="Nouvelle note" onclick="showNewNoteModal()" style="font-size:16px;padding:2px 6px;">✏️</button>
         <button class="row-btn" title="Nouveau dossier" onclick="showNewFolderModal()" style="font-size:16px;padding:2px 6px;">📁</button>
         <button class="row-btn" title="Synchroniser avec GitHub" onclick="ghSync()" id="btn-sync" style="font-size:16px;padding:2px 6px;">🔄</button>
+        <button class="row-btn" title="Télécharger toutes les notes" onclick="ghDownloadAll()" id="btn-download-all" style="font-size:16px;padding:2px 6px;">⬇️</button>
       </div>
       <div id="vault-counter" style="padding:6px 14px;font-size:.72rem;color:var(--text3);border-bottom:1px solid var(--border);flex-shrink:0;"></div>
       <div class="file-tree" id="file-tree"></div>
@@ -980,6 +981,45 @@ async function ghSync() {
     setGHStatus('❌', 'Erreur : ' + e.message, 'var(--red)');
     setStatus('❌ Erreur GitHub : ' + e.message);
   }
+}
+
+/* ── Télécharger le contenu de TOUTES les notes (forcer le chargement complet) ── */
+async function ghDownloadAll() {
+  if (!GH.token) { showGHModal(); return; }
+  const paths = Object.keys(vault);
+  if (!paths.length) { setStatus("⚠️ Aucune note à télécharger. Lancez d'abord une synchronisation."); return; }
+
+  const total = paths.length;
+  setGHStatus('🔄', `Téléchargement 0/${total}…`, 'var(--yellow)');
+  setStatus(`⏳ Téléchargement de ${total} notes depuis GitHub…`);
+  showProgress(0);
+
+  let done = 0, errors = 0;
+  const BATCH = 5; // adapté aux connexions lentes (ADSL)
+  for (let i = 0; i < paths.length; i += BATCH) {
+    const batch = paths.slice(i, i + BATCH);
+    await Promise.all(batch.map(async (path) => {
+      try {
+        await ghLoadNote(path); // remplit vault[path] avec le contenu réel
+      } catch(e) {
+        errors++;
+        console.warn('Erreur téléchargement', path, e);
+      }
+      done++;
+      showProgress(Math.round(done / total * 100));
+      setStatus(`⏳ ${done}/${total} notes téléchargées…${errors ? ' ⚠️ '+errors+' erreurs' : ''}`);
+      setGHStatus('🔄', `Téléchargement ${done}/${total}`, 'var(--yellow)');
+    }));
+    await new Promise(r => setTimeout(r, 300)); // pause entre lots pour rate limit + ADSL
+  }
+
+  hideProgress();
+  renderTree();
+  if (activeTab && vault[activeTab] !== null) renderNote(activeTab); // rafraîchir la note ouverte si besoin
+  setGHStatus('✅', `${total} notes — ${GH.repo}`, 'var(--green)');
+  setStatus(`✅ ${total - errors} note${total-errors>1?'s':''} téléchargée${total-errors>1?'s':''}` +
+    (errors ? ` (${errors} erreur${errors>1?'s':''})` : '') + ` !`);
+  setTimeout(() => setStatus(''), 6000);
 }
 
 /* ── Charger le contenu d'UNE SEULE note (à la demande) ── */
