@@ -1,0 +1,5 @@
+
+MOC: [[PEDOPHILIE]] | [[MITTERAND]] | [[LANG]] 
+
+
+![La sexualité puérile est encore un continent interdit, aux découvreurs du XXIe siècle d'en aborder les rivages. • (Jack Lano dans Gay Pied 31/01/91 qui prônait ta reconnaissance des sexualité périphériques• ) « Au dessus de 14 ans, c'est dégueulasse » (Frédéric Mitterand, dans « 93, Faubourg Satnt-Honoré« ) « La profusion de jeunes garçons trés attrayants et immédiatement disponibles me met dans un état de désir que je n'ai plus besoin de réfréner ou d'occulter. t•arqent et le sexe, je suis au cœur de mon système, celui qui fonctionne enfin car je sais qu'on ne me refusera pas. » (Frédéric Mitterand, dans son livre « La Mauvajse Vie• ) « J'avais besoin d'étre inconditionnellement accepté par eux. Je voulais que les gosses aient envie de moi, et je taisais tout pour qu'ils dépendent de moi. (Cohn Bendit, dans « Le Grand Bazar ) « Quand une petite fille de 5 ans de demi commence à vous déshabiller : c'est fantastique. C'est fantastique parce que c'est un jeu absolument érotico-maniaque...» (Cohn Bendit. dans « Apostrophe. ) ](Exported%20image%2020240602155226-0.png)
