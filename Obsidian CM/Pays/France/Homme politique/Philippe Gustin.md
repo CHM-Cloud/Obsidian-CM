@@ -1,0 +1,12 @@
+---
+MOC:
+  - FRANCE
+  - POLITIQUE
+  - UBRIS
+  - GOUVERNEMENT
+---
+
+
+MOC: [[FRANCE]] | [[POLITIQUE]] | [[GOUVERNEMENT]] | [[UBRIS]]
+
+![[Pasted image 20250816155943.png]]
